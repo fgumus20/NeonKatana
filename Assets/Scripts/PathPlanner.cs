@@ -1,12 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public class PathPlanner : MonoBehaviour
 {
     [Header("--- Settings ---")]
     [SerializeField] private int maxMoveCount = 3;
     [SerializeField] private float maxDashDistance = 6f;
-    //[SerializeField] private float moveSpeed = 45f;
+    [SerializeField] private float dashDuration = .2f;
 
     [Header("--- Visuals ---")]
     [SerializeField] private LineRenderer lineRenderer;
@@ -113,7 +114,37 @@ public class PathPlanner : MonoBehaviour
 
             pathPoints.Add(finalPoint);
             CreateNode(finalPoint);
+            if (pathPoints.Count > maxMoveCount)
+            {
+
+                StartAttackSequence(pathPoints);
+                ClearVisuals();
+            }
         }
+    }
+
+    void StartAttackSequence(List<Vector3> pathPoints)
+    {
+        GameManager.Instance.ChangeState(GameState.Attacking);
+
+        Sequence attackSequence = DOTween.Sequence();
+
+        for (int i = 0; i < pathPoints.Count - 1; i++)
+        {
+            Vector3 targetPos = pathPoints[i + 1];
+
+            targetPos.y = transform.position.y;
+
+            Tween moveTween = transform.DOMove(targetPos, dashDuration)
+                .SetEase(Ease.InQuart)
+                .OnStart(() => transform.LookAt(targetPos));
+            attackSequence.Append(moveTween);
+        }
+
+        attackSequence.OnComplete(() =>
+        {
+            GameManager.Instance.ChangeState(GameState.Roaming);
+        });
     }
 
     Vector3 GetWorldPositionAtHeight(Vector3 screenPos, float height)
@@ -134,7 +165,7 @@ public class PathPlanner : MonoBehaviour
         GameObject node = Instantiate(nodePrefab, pos, Quaternion.identity);
         spawnedNodes.Add(node);
     }
-
+    
     void ClearVisuals()
     {
         pathPoints.Clear();
