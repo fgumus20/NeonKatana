@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
 
     public void StartPlanningMode()
     {
-        ChangeState(GameState.Planning);
+        if( CurrentState != GameState.Planning )
+            ChangeState(GameState.Planning);
     }
 }
