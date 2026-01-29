@@ -1,59 +1,35 @@
 using UnityEngine;
 using System.Collections.Generic;
-using DG.Tweening;
+using UnityEngine.EventSystems;
 
 public class PathPlanner : MonoBehaviour
 {
-    [Header("--- Settings ---")]
-    [SerializeField] private int maxMoveCount = 3;
-    [SerializeField] private float maxDashDistance = 6f;
-    [SerializeField] private float dashDuration = .2f;
+    [Header("--- Modules ---")]
+    [SerializeField] private PlayerStatsSO stats;
+    [SerializeField] private DashExecutor executor;
 
     [Header("--- Visuals ---")]
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private GameObject nodePrefab;
 
-    //[Header("--- Layers ---")]
-    [SerializeField] private LayerMask obstacleLayer;
-    [SerializeField] private LayerMask enemyLayer;
-
     private List<Vector3> pathPoints = new List<Vector3>();
     private List<GameObject> spawnedNodes = new List<GameObject>();
-    private bool isDragging = false; // is mouse clicked??
+    private bool isDragging = false;
 
-
-    void OnEnable()
-    {
-        if (GameManager.Instance != null)
-            GameManager.Instance.OnStateChanged += HandleStateChanged;
-    }
-
-    void OnDisable()
-    {
-        if (GameManager.Instance != null)
-            GameManager.Instance.OnStateChanged -= HandleStateChanged;
-    }
+    // --- SETUP ---
+    void OnEnable() { if (GameManager.Instance != null) GameManager.Instance.OnStateChanged += HandleStateChanged; }
+    void OnDisable() { if (GameManager.Instance != null) GameManager.Instance.OnStateChanged -= HandleStateChanged; }
 
     private void HandleStateChanged(GameState newState)
     {
-        switch (newState)
-        {
-            case GameState.Planning:
-                ClearVisuals();
-                PreparePlanning();
-                break;
-            case GameState.Roaming:
-                ClearVisuals();
-                break;
-
-        }
+        if (newState == GameState.Planning) { ClearVisuals(); PreparePlanning(); }
+        else if (newState == GameState.Roaming) { ClearVisuals(); }
     }
 
     void Update()
     {
         if (GameManager.Instance.CurrentState != GameState.Planning) return;
-
-        HandleDrawingInput();
+        HandleInput();
     }
 
     void PreparePlanning()
@@ -61,52 +37,53 @@ public class PathPlanner : MonoBehaviour
         pathPoints.Clear();
         spawnedNodes.Clear();
 
-        // first point is main character
-        pathPoints.Add(transform.position);
+        Vector3 startPos = transform.position;
+        pathPoints.Add(startPos);
 
         lineRenderer.positionCount = 1;
-
-        lineRenderer.SetPosition(0, transform.position);
-
-        CreateNode(transform.position);
+        lineRenderer.SetPosition(0, startPos);
+        CreateNode(startPos);
     }
 
-    void HandleDrawingInput()
+    void HandleInput()
     {
-        if (pathPoints.Count > maxMoveCount) return;
+        if (pathPoints.Count > stats.maxMoveCount) return;
 
-        // Referance point
-        Vector3 lastFixedPoint = pathPoints[pathPoints.Count - 1];
+        // UI Check
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+            if (Input.touchCount > 0 && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) return;
+        }
 
-        Vector3 cursorWorldPos = GetWorldPositionAtHeight(Input.mousePosition, lastFixedPoint.y);
+        Vector3 lastPoint = pathPoints[pathPoints.Count - 1];
+        Vector3 cursorWorldPos = GetWorldPositionAtHeight(Input.mousePosition, lastPoint.y);
 
-        // first touch
         if (Input.GetMouseButtonDown(0))
         {
             isDragging = true;
             lineRenderer.positionCount = pathPoints.Count + 1;
-            lineRenderer.SetPosition(pathPoints.Count, lastFixedPoint);
+            lineRenderer.SetPosition(pathPoints.Count, lastPoint);
         }
 
         if (Input.GetMouseButton(0) && isDragging)
         {
+            Vector3 dir = (cursorWorldPos - lastPoint).normalized;
+            float dist = Mathf.Clamp(Vector3.Distance(cursorWorldPos, lastPoint), 0, stats.maxDashDistance);
 
-            Vector3 direction = (cursorWorldPos - lastFixedPoint).normalized;
-            float distance = Vector3.Distance(cursorWorldPos, lastFixedPoint);
+            if (Physics.Raycast(lastPoint, dir, out RaycastHit hit, dist, stats.obstacleLayer))
+                dist = hit.distance - 0.5f;
 
-            distance = Mathf.Clamp(distance, 0, maxDashDistance);
-
-            Vector3 previewPoint = lastFixedPoint + (direction * distance);
+            Vector3 previewPoint = lastPoint + (dir * dist);
             lineRenderer.SetPosition(pathPoints.Count, previewPoint);
         }
-
 
         if (Input.GetMouseButtonUp(0) && isDragging)
         {
             isDragging = false;
             Vector3 finalPoint = lineRenderer.GetPosition(pathPoints.Count);
 
-            if (Vector3.Distance(lastFixedPoint, finalPoint) < 0.5f)
+            if (Vector3.Distance(lastPoint, finalPoint) < 0.5f)
             {
                 lineRenderer.positionCount = pathPoints.Count;
                 return;
@@ -114,50 +91,36 @@ public class PathPlanner : MonoBehaviour
 
             pathPoints.Add(finalPoint);
             CreateNode(finalPoint);
-            if (pathPoints.Count > maxMoveCount)
-            {
 
-                StartAttackSequence(pathPoints);
-                ClearVisuals();
+            if (pathPoints.Count > stats.maxMoveCount)
+            {
+                SendToExecutor();
             }
         }
     }
 
-    void StartAttackSequence(List<Vector3> pathPoints)
-    {
-        GameManager.Instance.ChangeState(GameState.Attacking);
 
-        Sequence attackSequence = DOTween.Sequence();
+    void SendToExecutor()
+    {
+        List<DashCommand> commands = new List<DashCommand>();
 
         for (int i = 0; i < pathPoints.Count - 1; i++)
         {
-            Vector3 targetPos = pathPoints[i + 1];
 
-            targetPos.y = transform.position.y;
-
-            Tween moveTween = transform.DOMove(targetPos, dashDuration)
-                .SetEase(Ease.InQuart)
-                .OnStart(() => transform.LookAt(targetPos));
-            attackSequence.Append(moveTween);
+            commands.Add(new DashCommand(pathPoints[i], pathPoints[i + 1], stats));
         }
 
-        attackSequence.OnComplete(() =>
+        executor.Execute(commands, () =>
         {
-            GameManager.Instance.ChangeState(GameState.Roaming);
+            ClearVisuals();
         });
     }
 
     Vector3 GetWorldPositionAtHeight(Vector3 screenPos, float height)
     {
         Ray ray = Camera.main.ScreenPointToRay(screenPos);
-
-        Plane dynamicPlane = new Plane(Vector3.up, new Vector3(0, height, 0));
-
-        if (dynamicPlane.Raycast(ray, out float distance))
-        {
-            return ray.GetPoint(distance);
-        }
-        return Vector3.zero;
+        Plane plane = new Plane(Vector3.up, new Vector3(0, height, 0));
+        return plane.Raycast(ray, out float d) ? ray.GetPoint(d) : Vector3.zero;
     }
 
     void CreateNode(Vector3 pos)
@@ -165,13 +128,12 @@ public class PathPlanner : MonoBehaviour
         GameObject node = Instantiate(nodePrefab, pos, Quaternion.identity);
         spawnedNodes.Add(node);
     }
-    
+
     void ClearVisuals()
     {
         pathPoints.Clear();
         lineRenderer.positionCount = 0;
-        foreach (var node in spawnedNodes) Destroy(node);
+        foreach (var node in spawnedNodes) if (node != null) Destroy(node);
         spawnedNodes.Clear();
     }
-
 }
