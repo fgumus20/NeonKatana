@@ -25,8 +25,7 @@ public class DashExecutor : MonoBehaviour
     {
         float distance = Vector3.Distance(cmd.StartPos, cmd.EndPos);
 
-        // Hýz kontrolü (Bölme hatasý olmasýn)
-        float speed = (cmd.Stats.moveSpeed > 0) ? cmd.Stats.moveSpeed : 40f;
+        float speed = GetDashSpeed(cmd.Stats);
         float duration = distance / speed;
         if (duration < 0.01f) duration = 0.01f;
 
@@ -42,24 +41,40 @@ public class DashExecutor : MonoBehaviour
 
     private void CheckHits(DashCommand cmd)
     {
+        if (cmd.Stats == null) return;
+
+        float speed = GetDashSpeed(cmd.Stats);
+
         Vector3 direction = (cmd.EndPos - cmd.StartPos).normalized;
         float maxDistance = Vector3.Distance(cmd.StartPos, cmd.EndPos);
 
-        RaycastHit[] hits = Physics.SphereCastAll(cmd.StartPos, cmd.Stats.sphereCastRadius, direction, maxDistance, cmd.Stats.enemyLayer);
+        RaycastHit[] hits = Physics.SphereCastAll(
+            cmd.StartPos,
+            cmd.Stats.sphereCastRadius,
+            direction,
+            maxDistance,
+            cmd.Stats.enemyLayer
+        );
 
         foreach (RaycastHit hit in hits)
         {
             SimpleEnemy enemy = hit.collider.GetComponent<SimpleEnemy>();
-            if (enemy != null)
-            {
-                float timeToHit = hit.distance / cmd.Stats.moveSpeed;
-                if (timeToHit < 0.05f) timeToHit = 0.05f;
+            if (enemy == null) continue;
 
-                DOVirtual.DelayedCall(timeToHit, () =>
-                {
-                    if (enemy != null) enemy.Die();
-                });
-            }
+            float timeToHit = hit.distance / speed;
+            if (timeToHit < 0.05f) timeToHit = 0.05f;
+
+            DOVirtual.DelayedCall(timeToHit, () =>
+            {
+                if (enemy != null) enemy.Die();
+            });
         }
     }
+
+
+    private float GetDashSpeed(PlayerStatsSO stats)
+    {
+        return (stats != null && stats.moveSpeed > 0f) ? stats.moveSpeed : 40f;
+    }
+
 }
