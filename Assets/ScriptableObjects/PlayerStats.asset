@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
   maxMoveCount: 3
-  maxDashDistance: 6
-  moveSpeed: 40
+  maxDashDistance: 3
+  moveSpeed: 30
   sphereCastRadius: 0.4
   obstacleLayer:
     serializedVersion: 2
