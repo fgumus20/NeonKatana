@@ -2245,6 +2245,7 @@ GameObject:
   - component: {fileID: 1951506228}
   - component: {fileID: 1951506230}
   - component: {fileID: 1951506231}
+  - component: {fileID: 1951506232}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2393,7 +2394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: 3735a6b15d95fe94891d43e3acc83e93, type: 2}
-  executor: {fileID: 1951506231}
+  combat: {fileID: 1951506232}
   lineRenderer: {fileID: 1655175236}
   nodePrefab: {fileID: 4209709320253234219, guid: b09dede15dc5b8740a72512c45a1e189,
     type: 3}
@@ -2409,6 +2410,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bc6f42c682c0b545b6b6dd33a5536db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1951506232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1951506223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34112d07e0167204a93cb4cd174685d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  executor: {fileID: 1951506231}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
