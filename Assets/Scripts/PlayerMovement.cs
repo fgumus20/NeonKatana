@@ -29,7 +29,9 @@ public class PlayerMovement : MonoBehaviour
     {
         canMove = (state == GameState.Roaming);
 
-        if (!canMove)
+        rb.isKinematic = (state == GameState.Attacking);
+
+        if (!rb.isKinematic)
         {
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
@@ -38,6 +40,10 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+
+        if (rb.isKinematic)
+            return;
+
         if (!canMove)
         {
             rb.velocity = Vector3.zero;

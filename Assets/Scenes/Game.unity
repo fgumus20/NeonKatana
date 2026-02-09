@@ -135,12 +135,12 @@ GameObject:
   - component: {fileID: 254800120}
   - component: {fileID: 254800119}
   - component: {fileID: 254800118}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wall4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &254800117
 Transform:
@@ -1290,12 +1290,12 @@ GameObject:
   - component: {fileID: 1107966171}
   - component: {fileID: 1107966170}
   - component: {fileID: 1107966169}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wall1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1107966168
 Transform:
@@ -1566,12 +1566,12 @@ GameObject:
   - component: {fileID: 1480466236}
   - component: {fileID: 1480466235}
   - component: {fileID: 1480466234}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wall2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1480466233
 Transform:
@@ -1944,7 +1944,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!64 &1656254570
 MeshCollider:
@@ -2136,12 +2136,12 @@ GameObject:
   - component: {fileID: 1906468544}
   - component: {fileID: 1906468543}
   - component: {fileID: 1906468542}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wall3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1906468541
 Transform:

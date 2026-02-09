@@ -6,7 +6,7 @@ public class PathPlanner : MonoBehaviour
 {
     [Header("--- Modules ---")]
     [SerializeField] private PlayerStatsSO stats;
-    [SerializeField] private DashExecutor executor;
+    [SerializeField] private CombatController combat;
 
     [Header("--- Visuals ---")]
     [SerializeField] private LineRenderer lineRenderer;
@@ -131,24 +131,20 @@ public class PathPlanner : MonoBehaviour
 
             if (pathPoints.Count > stats.maxMoveCount)
             {
-                SendToExecutor();
+                SendToCombat();
             }
         }
     }
 
-    void SendToExecutor()
+    void SendToCombat()
     {
         List<DashCommand> commands = new List<DashCommand>();
 
         for (int i = 0; i < pathPoints.Count - 1; i++)
-        {
             commands.Add(new DashCommand(pathPoints[i], pathPoints[i + 1], stats));
-        }
 
-        executor.Execute(commands, () =>
-        {
-            ClearVisuals();
-        });
+        ClearVisuals();
+        combat.StartAttack(commands);
     }
 
     private Vector2 GetPointerScreenPosition()
