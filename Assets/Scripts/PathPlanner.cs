@@ -6,24 +6,46 @@ public class PathPlanner : MonoBehaviour
 {
     [Header("--- Modules ---")]
     [SerializeField] private PlayerStatsSO stats;
-    [SerializeField] private DashExecutor executor;
+    [SerializeField] private CombatController combat;
 
     [Header("--- Visuals ---")]
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private GameObject nodePrefab;
 
-    private List<Vector3> pathPoints = new List<Vector3>();
-    private List<GameObject> spawnedNodes = new List<GameObject>();
+    private readonly List<Vector3> pathPoints = new List<Vector3>();
+    private readonly List<GameObject> spawnedNodes = new List<GameObject>();
     private bool isDragging = false;
 
-    // --- SETUP ---
-    void OnEnable() { if (GameManager.Instance != null) GameManager.Instance.OnStateChanged += HandleStateChanged; }
-    void OnDisable() { if (GameManager.Instance != null) GameManager.Instance.OnStateChanged -= HandleStateChanged; }
+    private Camera cam;
+
+    private void Awake()
+    {
+        cam = Camera.main;
+    }
+
+    void OnEnable()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnStateChanged += HandleStateChanged;
+    }
+
+    void OnDisable()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnStateChanged -= HandleStateChanged;
+    }
 
     private void HandleStateChanged(GameState newState)
     {
-        if (newState == GameState.Planning) { ClearVisuals(); PreparePlanning(); }
-        else if (newState == GameState.Roaming) { ClearVisuals(); }
+        if (newState == GameState.Planning)
+        {
+            ClearVisuals();
+            PreparePlanning();
+        }
+        else if (newState == GameState.Roaming)
+        {
+            ClearVisuals();
+        }
     }
 
     void Update()
@@ -49,15 +71,21 @@ public class PathPlanner : MonoBehaviour
     {
         if (pathPoints.Count > stats.maxMoveCount) return;
 
-        // UI Check
         if (Input.GetMouseButtonDown(0))
         {
-            if (EventSystem.current.IsPointerOverGameObject()) return;
-            if (Input.touchCount > 0 && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) return;
+
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+                return;
+
+            if (Input.touchCount > 0 && EventSystem.current != null &&
+                EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+                return;
         }
 
         Vector3 lastPoint = pathPoints[pathPoints.Count - 1];
-        Vector3 cursorWorldPos = GetWorldPositionAtHeight(Input.mousePosition, lastPoint.y);
+
+        Vector2 screenPos = GetPointerScreenPosition();
+        Vector3 cursorWorldPos = GetWorldPositionAtHeight(screenPos, lastPoint.y);
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -68,11 +96,20 @@ public class PathPlanner : MonoBehaviour
 
         if (Input.GetMouseButton(0) && isDragging)
         {
-            Vector3 dir = (cursorWorldPos - lastPoint).normalized;
-            float dist = Mathf.Clamp(Vector3.Distance(cursorWorldPos, lastPoint), 0, stats.maxDashDistance);
+            Vector3 delta = cursorWorldPos - lastPoint;
+            if (delta.sqrMagnitude < 0.0001f)
+            {
+                lineRenderer.SetPosition(pathPoints.Count, lastPoint);
+                return;
+            }
+
+            Vector3 dir = delta.normalized;
+            float dist = Mathf.Clamp(delta.magnitude, 0f, stats.maxDashDistance);
 
             if (Physics.Raycast(lastPoint, dir, out RaycastHit hit, dist, stats.obstacleLayer))
-                dist = hit.distance - 0.5f;
+            {
+                dist = Mathf.Max(0f, hit.distance - 0.5f);
+            }
 
             Vector3 previewPoint = lastPoint + (dir * dist);
             lineRenderer.SetPosition(pathPoints.Count, previewPoint);
@@ -94,32 +131,37 @@ public class PathPlanner : MonoBehaviour
 
             if (pathPoints.Count > stats.maxMoveCount)
             {
-                SendToExecutor();
+                SendToCombat();
             }
         }
     }
 
-
-    void SendToExecutor()
+    void SendToCombat()
     {
         List<DashCommand> commands = new List<DashCommand>();
 
         for (int i = 0; i < pathPoints.Count - 1; i++)
-        {
-
             commands.Add(new DashCommand(pathPoints[i], pathPoints[i + 1], stats));
-        }
 
-        executor.Execute(commands, () =>
-        {
-            ClearVisuals();
-        });
+        ClearVisuals();
+        combat.StartAttack(commands);
     }
 
-    Vector3 GetWorldPositionAtHeight(Vector3 screenPos, float height)
+    private Vector2 GetPointerScreenPosition()
     {
-        Ray ray = Camera.main.ScreenPointToRay(screenPos);
-        Plane plane = new Plane(Vector3.up, new Vector3(0, height, 0));
+        if (Input.touchCount > 0)
+            return Input.GetTouch(0).position;
+
+        return Input.mousePosition;
+    }
+
+    private Vector3 GetWorldPositionAtHeight(Vector2 screenPos, float height)
+    {
+        if (cam == null) cam = Camera.main;
+        if (cam == null) return Vector3.zero;
+
+        Ray ray = cam.ScreenPointToRay(screenPos);
+        Plane plane = new Plane(Vector3.up, new Vector3(0f, height, 0f));
         return plane.Raycast(ray, out float d) ? ray.GetPoint(d) : Vector3.zero;
     }
 
@@ -133,7 +175,10 @@ public class PathPlanner : MonoBehaviour
     {
         pathPoints.Clear();
         lineRenderer.positionCount = 0;
-        foreach (var node in spawnedNodes) if (node != null) Destroy(node);
+
+        foreach (var node in spawnedNodes)
+            if (node != null) Destroy(node);
+
         spawnedNodes.Clear();
     }
 }
