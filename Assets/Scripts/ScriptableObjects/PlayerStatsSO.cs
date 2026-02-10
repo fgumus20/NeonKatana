@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewPlayerStats", menuName = "NeonBlade/PlayerStats")]
+[CreateAssetMenu(fileName = "NewPlayerStats", menuName = "NeonKatana/PlayerStats")]
 public class PlayerStatsSO : ScriptableObject
 {
     [Header("--- Movement Settings ---")]

@@ -1,16 +1,15 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "NeonKatana/Enemy Data", fileName = "EnemyData_")]
+[CreateAssetMenu(fileName = "NewEnemyData", menuName = "NeonKatana/EnemyData")]
 public class EnemyDataSO : ScriptableObject
 {
-    [Header("Core")]
-    public int hp = 1;
-    public float moveSpeed = 4f;
+    [Header("Movement")]
+    public float moveSpeed = 3.5f;
+    public float stoppingDistance = 1.5f;
 
-    [Header("Attack")]
-    public float attackRange = 1.2f;
+    [Header("Combat")]
+    public float attackRange = 2f;
+    public float anticipationDuration = 0.5f;
+    public float recoveryDuration = 1.0f;
     public int damage = 1;
-    public float windupTime = 0.25f;
-    public float recoveryTime = 0.15f;
-    public float cooldown = 0.6f;
 }
