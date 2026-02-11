@@ -16,8 +16,7 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: "Avatar creation failed:\n\tTransform 'LowerLeg.L' is not an
-      ancestor of 'Foot.L'\n"
+    rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
@@ -596,8 +595,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -848,8 +847,8 @@ ModelImporter:
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Foot.L
-      parentName: LowerLeg.L_end
-      position: {x: 0, y: 0, z: 0}
+      parentName: LowerLeg.L
+      position: {x: 0, y: 0.0035346781, z: 0}
       rotation: {x: -0.77414155, y: -0.058530264, z: -0.21833599, w: 0.59127706}
       scale: {x: 1.000012, y: 1, z: 1}
     - name: Foot.L_end
