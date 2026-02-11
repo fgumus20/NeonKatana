@@ -80,6 +80,6 @@ public class DashExecutor : MonoBehaviour
 
     private float GetDashSpeed(PlayerStatsSO stats)
     {
-        return (stats != null && stats.moveSpeed > 0f) ? stats.moveSpeed : 40f;
+        return (stats != null && stats.dashMoveSpeed > 0f) ? stats.dashMoveSpeed : 40f;
     }
 }

@@ -69,7 +69,7 @@ public class PathPlanner : MonoBehaviour
 
     void HandleInput()
     {
-        if (pathPoints.Count > stats.maxMoveCount) return;
+        if (pathPoints.Count > stats.dashMoveCount) return;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -129,7 +129,7 @@ public class PathPlanner : MonoBehaviour
             pathPoints.Add(finalPoint);
             CreateNode(finalPoint);
 
-            if (pathPoints.Count > stats.maxMoveCount)
+            if (pathPoints.Count > stats.dashMoveCount)
             {
                 SendToCombat();
             }
