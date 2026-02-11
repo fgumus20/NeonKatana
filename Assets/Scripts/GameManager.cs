@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 1f;
                 break;
             case GameState.Planning:
-                Time.timeScale = 0f;
+                Time.timeScale = 0.2f;
                 break;
             case GameState.Attacking:
                 Time.timeScale = 1f;

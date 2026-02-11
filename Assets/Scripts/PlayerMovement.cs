@@ -9,9 +9,12 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private bool canMove = true;
 
+    private PlayerAnimationManager _animationManager;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        _animationManager = GetComponent<PlayerAnimationManager>();
     }
 
     void OnEnable()
@@ -54,7 +57,12 @@ public class PlayerMovement : MonoBehaviour
         Vector2 input = joystick.GetInput();
         Vector3 movement = new Vector3(input.x, 0f, input.y);
 
-        if (movement.magnitude > 0.1f)
+        bool isMoving = movement.magnitude > 0.2f;
+
+
+        _animationManager.SetMoving(isMoving);
+
+        if (isMoving)
         {
             rb.velocity = movement.normalized * moveSpeed;
 
