@@ -5,6 +5,7 @@ public class PlayerStatsSO : ScriptableObject
 {
     [Header("--- Movement Settings ---")]
     public int dashMoveCount = 3;
+    public float minDashDistance = 3f;
     public float maxDashDistance = 6f;
     public float dashMoveSpeed = 40f;
 

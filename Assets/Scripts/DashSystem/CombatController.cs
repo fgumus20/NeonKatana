@@ -1,34 +1,62 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Scripts.Combat;
+
 
 public class CombatController : MonoBehaviour
 {
+    private enum CombatSubState {None, Planning, Executing}
+
     [Header("--- Modules ---")]
-    [SerializeField] private DashExecutor executor;
+    [SerializeField] private Animator animator;
+    [SerializeField] private PlayerStatsSO stats;
 
-    private void OnEnable()
+    //[Header("--- Focus Settings ---")]
+    //[SerializeField] private float planningTimeScale = 0.2f;
+
+    [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private GameObject nodePrefab;
+
+    private CombatState currentState;
+    private CombatBlackboard blackboard;
+    
+
+    private void Start()
     {
-        if (executor != null)
-            executor.OnAttackComplete += HandleAttackComplete;
+        GameManager.Instance.OnStateChanged += HandleStateChanged;
+        Rigidbody rb = GetComponent<Rigidbody>();
+        blackboard = new CombatBlackboard(transform, rb, animator, stats);
     }
 
-    private void OnDisable()
+
+
+    private void Update()
     {
-        if (executor != null)
-            executor.OnAttackComplete -= HandleAttackComplete;
+        if (GameManager.Instance.CurrentState == GameState.Combat)
+        {
+            currentState.Update();
+        }
+
     }
 
-    public void StartAttack(List<DashCommand> commands)
+    public void ChangeState(CombatState newState)
     {
-        // Planning -> Attacking
-        GameManager.Instance.ChangeState(GameState.Attacking);
-
-        executor.Execute(commands);
+        currentState?.OnExit();
+        currentState = newState;
+        currentState.OnEnter();
     }
 
-    private void HandleAttackComplete()
+    private void HandleStateChanged(GameState state)
     {
-        // Attacking -> Roaming
-        GameManager.Instance.ChangeState(GameState.Roaming);
+
+        if(state == GameState.Combat)
+        {
+            ChangeState(new PathPlanner(this, blackboard, lineRenderer));
+        }
+    }
+
+    public GameObject SpawnNode(Vector3 position)
+    {
+        return Instantiate(nodePrefab, position, Quaternion.identity);
     }
 }

@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
     {
         canMove = (state == GameState.Roaming);
 
-        rb.isKinematic = (state == GameState.Attacking);
+        rb.isKinematic = (state == GameState.Combat);
 
         if (!rb.isKinematic)
         {
