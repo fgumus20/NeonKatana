@@ -15,7 +15,7 @@ MonoBehaviour:
   dashMoveCount: 3
   minDashDistance: 3
   maxDashDistance: 5
-  dashMoveSpeed: 40
+  dashMoveSpeed: 20
   sphereCastRadius: 0.4
   obstacleLayer:
     serializedVersion: 2

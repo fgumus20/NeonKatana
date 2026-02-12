@@ -1,10 +1,8 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace Scripts.Combat
 {
-    using UnityEngine;
-    using System.Collections.Generic;
-
     public class CombatBlackboard
     {
         public Transform PlayerTransform { get; private set; }

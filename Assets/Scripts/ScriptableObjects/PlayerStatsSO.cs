@@ -10,7 +10,7 @@ public class PlayerStatsSO : ScriptableObject
     public float dashMoveSpeed = 40f;
 
     [Header("--- Physic ---")]
-    public float sphereCastRadius = 1f;
+    public float sphereCastRadius = 3f;
     public LayerMask obstacleLayer;
     public LayerMask enemyLayer;
 }
