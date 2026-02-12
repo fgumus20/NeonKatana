@@ -4,8 +4,7 @@ using System;
 public enum GameState
 {
     Roaming,
-    Planning,
-    Attacking
+    Combat
 }
 
 public class GameManager : MonoBehaviour
@@ -15,7 +14,7 @@ public class GameManager : MonoBehaviour
 
     public event Action<GameState> OnStateChanged;
 
-    void Awake()
+    private void Awake()
     {
         if (Instance == null)
         {
@@ -28,35 +27,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Start()
+    private void Start()
     {
         ChangeState(GameState.Roaming);
     }
-   
+
     public void ChangeState(GameState newState)
     {
+        if (CurrentState == newState) return;
+
         CurrentState = newState;
-
-        switch (newState)
-        {
-            case GameState.Roaming:
-                Time.timeScale = 1f;
-                break;
-            case GameState.Planning:
-                Time.timeScale = 0.2f;
-                break;
-            case GameState.Attacking:
-                Time.timeScale = 1f;
-                break;
-        }
-
         OnStateChanged?.Invoke(newState);
+
         Debug.Log($"Game State Changed: {newState}");
     }
 
-    public void StartPlanningMode()
+    public void StartCombat()
     {
-        if( CurrentState != GameState.Planning )
-            ChangeState(GameState.Planning);
+        ChangeState(GameState.Combat);
     }
 }

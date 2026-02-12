@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1532cc0b197ca3f46ad743286f8c62b9, type: 3}
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
-  maxMoveCount: 3
-  maxDashDistance: 3
-  moveSpeed: 30
-  sphereCastRadius: 0.4
+  dashMoveCount: 3
+  minDashDistance: 3
+  maxDashDistance: 4
+  dashMoveSpeed: 10
+  sphereCastRadius: 0.5
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 128

@@ -11,7 +11,6 @@ namespace Scripts.EnemyAI.States
         public override void OnEnter()
         {
             _timer = controller.data.recoveryDuration;
-            Debug.Log("Recovery: Düþman dinleniyor.");
         }
 
         public override void OnUpdate()

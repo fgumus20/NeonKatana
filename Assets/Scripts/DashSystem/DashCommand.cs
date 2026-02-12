@@ -1,17 +1,18 @@
 using UnityEngine;
 
-public readonly struct DashCommand
+namespace Scripts.Combat
 {
-    public Vector3 StartPos { get; }
-    public Vector3 EndPos { get; }
-    public PlayerStatsSO Stats { get; }
-
-    public DashCommand(Vector3 start, Vector3 end, PlayerStatsSO stats)
+    public readonly struct DashCommand
     {
-        start.y = end.y;
+        public Vector3 StartPos { get; }
+        public Vector3 EndPos { get; }
 
-        StartPos = start;
-        EndPos = end;
-        Stats = stats;
+        public DashCommand(Vector3 start, Vector3 end)
+        {
+            start.y = end.y;
+            StartPos = start;
+            EndPos = end;
+        }
     }
 }
+

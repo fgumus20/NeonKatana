@@ -10,7 +10,6 @@ namespace Scripts.EnemyAI.States
 
         public override void OnEnter()
         {
-            Debug.Log("ATTACK: Vuruþ yapýldý!");
             controller.ChangeState(new EnemyRecoveryState(controller));
         }
     }

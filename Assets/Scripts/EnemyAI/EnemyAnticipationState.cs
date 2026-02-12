@@ -12,9 +12,6 @@ namespace Scripts.EnemyAI.States
         {
             controller.agent.isStopped = true;
             _timer = controller.data.anticipationDuration;
-            Debug.Log("Anticipation: Düþman hazýrlanýyor...");
-
-
         }
 
         public override void OnUpdate()
