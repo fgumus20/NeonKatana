@@ -20,7 +20,6 @@ namespace Scripts.Combat.States
         {
             Sequence dashSequence = DOTween.Sequence();
             var commands = CombatBlackboard.DashPoints;
-            Debug.Log(commands.Count);
 
             foreach (var cmd in commands)
             {
@@ -30,7 +29,7 @@ namespace Scripts.Combat.States
                 dashSequence.AppendCallback(() =>
                 {
                     CombatBlackboard.PlayerTransform.LookAt(cmd.EndPos);
-                    //CombatBlackboard.PlayerAnimator.SetTrigger("attack");
+                    CombatBlackboard.PlayerAnimator.SetTrigger("attack");
                 });
 
                 dashSequence.Append(CombatBlackboard.PlayerRigidbody.DOMove(cmd.EndPos, duration).SetEase(Ease.InExpo));
@@ -79,6 +78,8 @@ namespace Scripts.Combat.States
 
 
         public override void Update() { }
-        public override void OnExit() { CombatBlackboard.ClearPoints(); }
+        public override void OnExit() {
+
+            CombatBlackboard.ClearPoints(); }
     }
 }

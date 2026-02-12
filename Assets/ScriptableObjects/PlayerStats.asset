@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dashMoveCount: 3
   minDashDistance: 3
-  maxDashDistance: 5
-  dashMoveSpeed: 20
-  sphereCastRadius: 0.4
+  maxDashDistance: 4
+  dashMoveSpeed: 10
+  sphereCastRadius: 0.5
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 128
