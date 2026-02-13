@@ -20,25 +20,35 @@ namespace Scripts.Combat.States
         {
             Sequence dashSequence = DOTween.Sequence();
             var commands = CombatBlackboard.DashPoints;
+            int currentStep = 0;
 
             foreach (var cmd in commands)
             {
                 float distance = Vector3.Distance(cmd.StartPos, cmd.EndPos);
-                float duration = distance / CombatBlackboard.PlayerStats.dashMoveSpeed;
+                //float duration = distance / CombatBlackboard.PlayerStats.dashMoveSpeed;
+                float duration = .45f;
+                int indexToSend = currentStep % 2;
 
+                Vector3 direction = (cmd.EndPos - cmd.StartPos).normalized;
+
+                direction.y = 0;
+                dashSequence.Append(CombatBlackboard.PlayerTransform.DORotateQuaternion(Quaternion.LookRotation(direction), .05f));
                 dashSequence.AppendCallback(() =>
                 {
-                    CombatBlackboard.PlayerTransform.LookAt(cmd.EndPos);
+                    CombatBlackboard.PlayerAnimator.SetInteger("animIndex", indexToSend);
                     CombatBlackboard.PlayerAnimator.SetTrigger("attack");
+
                 });
 
-                dashSequence.Append(CombatBlackboard.PlayerRigidbody.DOMove(cmd.EndPos, duration).SetEase(Ease.InExpo));
+
+
+                dashSequence.Append(CombatBlackboard.PlayerRigidbody.DOMove(cmd.EndPos, duration).SetEase(Ease.Linear));
 
                 dashSequence.AppendCallback(() =>
                 {
                     ApplyHitEffects(cmd);
                 });
-
+                currentStep++;
                 dashSequence.AppendInterval(0.1f);
             }
 

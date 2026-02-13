@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        CurrentState = GameState.Roaming;
     }
 
     private void Start()
