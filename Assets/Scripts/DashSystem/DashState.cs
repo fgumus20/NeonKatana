@@ -25,9 +25,13 @@ namespace Scripts.Combat.States
             foreach (var cmd in commands)
             {
                 float distance = Vector3.Distance(cmd.StartPos, cmd.EndPos);
-                //float duration = distance / CombatBlackboard.PlayerStats.dashMoveSpeed;
                 float duration = .45f;
                 int indexToSend = currentStep % 2;
+
+                if (indexToSend == 0)
+                {
+                    duration = 0.30f;
+                }
 
                 Vector3 direction = (cmd.EndPos - cmd.StartPos).normalized;
 
@@ -35,12 +39,10 @@ namespace Scripts.Combat.States
                 dashSequence.Append(CombatBlackboard.PlayerTransform.DORotateQuaternion(Quaternion.LookRotation(direction), .05f));
                 dashSequence.AppendCallback(() =>
                 {
-                    CombatBlackboard.PlayerAnimator.SetInteger("animIndex", indexToSend);
-                    CombatBlackboard.PlayerAnimator.SetTrigger("attack");
+                    PlayAnimation(indexToSend);
+                    PlayEffects();
 
                 });
-
-
 
                 dashSequence.Append(CombatBlackboard.PlayerRigidbody.DOMove(cmd.EndPos, duration).SetEase(Ease.Linear));
 
@@ -48,12 +50,14 @@ namespace Scripts.Combat.States
                 {
                     ApplyHitEffects(cmd);
                 });
+
                 currentStep++;
                 dashSequence.AppendInterval(0.1f);
             }
 
             dashSequence.OnComplete(() =>
             {
+                StopEffects();
                 GameManager.Instance.ChangeState(GameState.Roaming);
             });
         }
@@ -86,10 +90,25 @@ namespace Scripts.Combat.States
             }
         }
 
+        private void PlayAnimation(int indexToSend)
+        {
+            CombatBlackboard.PlayerAnimator.SetInteger("animIndex", indexToSend);
+            CombatBlackboard.PlayerAnimator.SetTrigger("attack");
+        }
+
+        private void PlayEffects()
+        {
+            CombatBlackboard.CombatVfxController.PlayDashSegmentEffects();
+        }
+
+        private void StopEffects()
+        {
+            CombatBlackboard.CombatVfxController.StopDashSegmentEffects();
+        }
 
         public override void Update() { }
         public override void OnExit() {
-
-            CombatBlackboard.ClearPoints(); }
+            CombatBlackboard.ClearPoints(); 
+        }
     }
 }
