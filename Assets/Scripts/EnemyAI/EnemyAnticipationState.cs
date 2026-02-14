@@ -6,12 +6,12 @@ namespace Scripts.EnemyAI.States
     {
         private float _timer;
 
-        public EnemyAnticipationState(EnemyController controller) : base(controller) { }
+        public EnemyAnticipationState(EnemyController controller, EnemyBlackboard enemyBlackboard) : base(controller, enemyBlackboard) { }
 
         public override void OnEnter()
         {
-            controller.agent.isStopped = true;
-            _timer = controller.data.anticipationDuration;
+            enemyBlackboard.Agent.isStopped = true;
+            _timer = enemyBlackboard.Data.anticipationDuration;
         }
 
         public override void OnUpdate()
@@ -19,7 +19,7 @@ namespace Scripts.EnemyAI.States
             _timer -= Time.deltaTime;
 
             // Düþman dururken oyuncuya dönmeye devam etmeli (Tracking)
-            Vector3 dir = (controller.playerTransform.position - controller.transform.position).normalized;
+            Vector3 dir = (enemyBlackboard.Target.position - controller.transform.position).normalized;
             dir.y = 0;
             if (dir.sqrMagnitude > 0.01f)
             {
@@ -28,8 +28,10 @@ namespace Scripts.EnemyAI.States
             }
 
             if (_timer <= 0)
-                controller.ChangeState(new EnemyAttackState(controller));
+                controller.ChangeState(new EnemyAttackState(controller, enemyBlackboard));
         }
+
+        public override void OnExit() {}
     }
 
 }

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Scripts.EnemyAI.States;
 using UnityEngine;
 using UnityEngine.AI;
@@ -7,11 +8,13 @@ namespace Scripts.EnemyAI
     [RequireComponent(typeof(NavMeshAgent))]
     public class EnemyController : MonoBehaviour
     {
-        public EnemyDataSO data;
-        public Transform playerTransform;
+        [SerializeField] private EnemyDataSO data;
+        [SerializeField] private Transform playerTransform;
 
-        [HideInInspector] public NavMeshAgent agent;
+        private NavMeshAgent agent;
         private EnemyState _currentState;
+        private EnemyBlackboard enemyBlackboard;
+        
 
         private void Awake()
         {
@@ -19,11 +22,14 @@ namespace Scripts.EnemyAI
             agent.speed = data.moveSpeed;
             agent.stoppingDistance = data.stoppingDistance;
             agent.updateRotation = true;
+
+            enemyBlackboard = new EnemyBlackboard(playerTransform, data, agent);
+
         }
 
         private void Start()
         {
-            ChangeState(new EnemyChaseState(this));
+            ChangeState(new EnemyChaseState(this, enemyBlackboard));
         }
 
         private void Update()
@@ -36,6 +42,18 @@ namespace Scripts.EnemyAI
             _currentState?.OnExit();
             _currentState = newState;
             _currentState?.OnEnter();
+        }
+
+        public void Die()
+        {
+            GetComponent<Collider>().enabled = false;
+
+            transform.DOScale(Vector3.zero, 0.2f).OnComplete(() =>
+            {
+                Destroy(gameObject);
+            });
+
+            Debug.Log("Enemy died: " + gameObject.name);
         }
     }
 

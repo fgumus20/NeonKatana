@@ -1,22 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Scripts.Combat;
 
 namespace Scripts.EnemyAI.States
 {
-
     public abstract class EnemyState
     {
-        protected EnemyController controller;
+        protected readonly EnemyController controller;
+        protected EnemyBlackboard enemyBlackboard;
 
-        public EnemyState(EnemyController controller)
+        public EnemyState(EnemyController controller, EnemyBlackboard enemyBlackboard)
         {
             this.controller = controller;
+            this.enemyBlackboard = enemyBlackboard;
         }
 
-        public virtual void OnEnter() { }
-        public virtual void OnUpdate() { }
-        public virtual void OnExit() { }
+        public abstract void OnEnter();
+        public abstract void OnUpdate();
+        public abstract void OnExit();
     }
-
 }

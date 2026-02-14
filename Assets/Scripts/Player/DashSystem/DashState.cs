@@ -1,6 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
+using Scripts.EnemyAI;
 
 namespace Scripts.Combat.States
 {
@@ -85,7 +86,7 @@ namespace Scripts.Combat.States
                 int id = col.GetInstanceID();
                 if (!_hitSet.Add(id)) continue;
 
-                if (col.TryGetComponent(out SimpleEnemy enemy))
+                if (col.TryGetComponent(out EnemyController enemy))
                     enemy.Die();
             }
         }

@@ -10,17 +10,16 @@ namespace Scripts.EnemyAI.States
         private float _repathTimer;
         private const float RepathInterval = .5f;
 
-        public EnemyChaseState(EnemyController controller) : base(controller) { }
+        public EnemyChaseState(EnemyController controller, EnemyBlackboard enemyBlackboard) : base(controller, enemyBlackboard) { }
 
         public override void OnEnter()
         {
-            controller.agent.isStopped = false;
-            //Debug.Log("Chase State'e girildi.");
+            enemyBlackboard.Agent.isStopped = false;
         }
 
         public override void OnUpdate()
         {
-            if (controller.playerTransform == null) return;
+            if (enemyBlackboard.Target == null) return;
 
             _repathTimer -= Time.deltaTime;
             if (_repathTimer <= 0f)
@@ -29,27 +28,26 @@ namespace Scripts.EnemyAI.States
                 _repathTimer = RepathInterval;
             }
 
-            float distance = Vector3.Distance(controller.transform.position, controller.playerTransform.position);
+            float distance = Vector3.Distance(controller.transform.position, enemyBlackboard.Target.position);
 
-            if (distance <= controller.data.attackRange)
+            if (distance <= enemyBlackboard.Data.attackRange)
             {
-                //Debug.Log("Saldýrý menziline girildi.");
-                controller.ChangeState(new EnemyAnticipationState(controller));
+                controller.ChangeState(new EnemyAnticipationState(controller, enemyBlackboard));
             }
         }
 
         private void UpdatePath()
         {
-            if (controller.agent.isOnNavMesh)
+            if (enemyBlackboard.Agent.isOnNavMesh)
             {
-                controller.agent.SetDestination(controller.playerTransform.position);
+                enemyBlackboard.Agent.SetDestination(enemyBlackboard.Target.position);
             }
         }
 
         public override void OnExit()
         {
-            if (controller.agent.isOnNavMesh)
-                controller.agent.isStopped = true;
+            if (enemyBlackboard.Agent.isOnNavMesh)
+                enemyBlackboard.Agent.isStopped = true;
         }
     }
 

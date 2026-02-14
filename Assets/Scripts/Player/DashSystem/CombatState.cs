@@ -4,6 +4,7 @@ namespace Scripts.Combat
     {
         protected readonly CombatBlackboard CombatBlackboard;
         protected CombatController CombatController;
+
         protected CombatState(CombatController controller, CombatBlackboard blackboard)
         {
             CombatBlackboard = blackboard;
