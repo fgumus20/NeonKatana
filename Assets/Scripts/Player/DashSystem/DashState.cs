@@ -37,7 +37,9 @@ namespace Scripts.Combat.States
                 Vector3 direction = (cmd.EndPos - cmd.StartPos).normalized;
 
                 direction.y = 0;
-                dashSequence.Append(CombatBlackboard.PlayerTransform.DORotateQuaternion(Quaternion.LookRotation(direction), .05f));
+
+                dashSequence.Append(CombatBlackboard.PlayerTransform.DORotateQuaternion(Quaternion.LookRotation(direction), .10f));
+                //CombatBlackboard.PlayerTransform.LookAt(direction);
                 dashSequence.AppendCallback(() =>
                 {
                     PlayAnimation(indexToSend);

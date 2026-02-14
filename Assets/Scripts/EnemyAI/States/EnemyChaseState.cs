@@ -32,7 +32,7 @@ namespace Scripts.EnemyAI.States
 
             if (distance <= enemyBlackboard.Data.attackRange)
             {
-                controller.ChangeState(new EnemyAnticipationState(controller, enemyBlackboard));
+                controller.ChangeState<EnemyAnticipationState>();
             }
         }
 

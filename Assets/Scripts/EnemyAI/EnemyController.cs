@@ -12,9 +12,9 @@ namespace Scripts.EnemyAI
         [SerializeField] private Transform playerTransform;
 
         private NavMeshAgent agent;
-        private EnemyState _currentState;
         private EnemyBlackboard enemyBlackboard;
-        
+
+        private EnemyStateMachine _stateMachine;
 
         private void Awake()
         {
@@ -24,24 +24,29 @@ namespace Scripts.EnemyAI
             agent.updateRotation = true;
 
             enemyBlackboard = new EnemyBlackboard(playerTransform, data, agent);
-
+            CreateStates();
         }
 
         private void Start()
         {
-            ChangeState(new EnemyChaseState(this, enemyBlackboard));
+            _stateMachine.ChangeState<EnemyChaseState>();
         }
 
         private void Update()
         {
-            _currentState?.OnUpdate();
+            _stateMachine.Update();
         }
 
-        public void ChangeState(EnemyState newState)
+        public void ChangeState<T>() where T : EnemyState => _stateMachine.ChangeState<T>();
+
+        private void CreateStates()
         {
-            _currentState?.OnExit();
-            _currentState = newState;
-            _currentState?.OnEnter();
+            _stateMachine = new EnemyStateMachine();
+
+            _stateMachine.AddState(new EnemyChaseState(this, enemyBlackboard));
+            _stateMachine.AddState(new EnemyAnticipationState(this, enemyBlackboard));
+            _stateMachine.AddState(new EnemyAttackState(this, enemyBlackboard));
+            _stateMachine.AddState(new EnemyRecoveryState(this, enemyBlackboard));
         }
 
         public void Die()

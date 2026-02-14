@@ -10,7 +10,7 @@ namespace Scripts.EnemyAI.States
 
         public override void OnEnter()
         {
-            controller.ChangeState(new EnemyRecoveryState(controller,enemyBlackboard));
+            controller.ChangeState<EnemyRecoveryState>();
         }
         public override void OnUpdate() {}
 

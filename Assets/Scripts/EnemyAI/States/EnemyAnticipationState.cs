@@ -28,7 +28,7 @@ namespace Scripts.EnemyAI.States
             }
 
             if (_timer <= 0)
-                controller.ChangeState(new EnemyAttackState(controller, enemyBlackboard));
+                controller.ChangeState<EnemyAttackState>();
         }
 
         public override void OnExit() {}

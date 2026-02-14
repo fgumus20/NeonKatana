@@ -18,7 +18,7 @@ namespace Scripts.EnemyAI.States
             _timer -= Time.deltaTime;
 
             if (_timer <= 0)
-                controller.ChangeState(new EnemyChaseState(controller, enemyBlackboard));
+                controller.ChangeState<EnemyChaseState>();
         }
 
         public override void OnExit() {}
