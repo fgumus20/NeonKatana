@@ -1,6 +1,7 @@
 using UnityEngine;
 using Scripts.Combat.States;
 using System.Collections.Generic;
+using Scripts.Combat.Vfx;
 
 namespace Scripts.Combat
 {
@@ -9,10 +10,9 @@ namespace Scripts.Combat
 
         [Header("--- Modules ---")]
         [SerializeField] private Animator animator;
+        [SerializeField] private CombatVfxController combatVfxController;
         [SerializeField] private PlayerStatsSO stats;
 
-        //[Header("--- Focus Settings ---")]
-        //[SerializeField] private float planningTimeScale = 0.2f;
 
         [SerializeField] private LineRenderer lineRenderer;
         
@@ -26,11 +26,10 @@ namespace Scripts.Combat
         private void Start()
         {
             GameManager.Instance.OnStateChanged += HandleStateChanged;
+            combatVfxController = GetComponentInChildren<CombatVfxController>();
             Rigidbody rb = GetComponent<Rigidbody>();
-            blackboard = new CombatBlackboard(transform, rb, animator, stats);
+            blackboard = new CombatBlackboard(transform, rb, animator, stats,combatVfxController);
         }
-
-
 
         private void Update()
         {

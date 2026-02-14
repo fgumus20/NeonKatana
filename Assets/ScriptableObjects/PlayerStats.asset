@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
   dashMoveCount: 3
-  minDashDistance: 3
+  minDashDistance: 4
   maxDashDistance: 4
   dashMoveSpeed: 10
   sphereCastRadius: 0.5

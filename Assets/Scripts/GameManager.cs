@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        CurrentState = GameState.Roaming;
     }
 
     private void Start()
@@ -38,8 +39,6 @@ public class GameManager : MonoBehaviour
 
         CurrentState = newState;
         OnStateChanged?.Invoke(newState);
-
-        Debug.Log($"Game State Changed: {newState}");
     }
 
     public void StartCombat()

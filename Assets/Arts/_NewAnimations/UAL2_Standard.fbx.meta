@@ -907,7 +907,7 @@ ModelImporter:
       takeName: Armature|Sword_Dash_RM
       internalID: 938527645004508068
       firstFrame: 0
-      lastFrame: 47
+      lastFrame: 40
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -1052,7 +1052,7 @@ ModelImporter:
       takeName: Armature|Sword_Regular_C
       internalID: 543990450412311274
       firstFrame: 0
-      lastFrame: 60
+      lastFrame: 40
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
