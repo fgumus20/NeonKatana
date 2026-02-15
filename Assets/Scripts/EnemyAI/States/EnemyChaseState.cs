@@ -10,11 +10,13 @@ namespace Scripts.EnemyAI.States
         private float _repathTimer;
         private const float RepathInterval = .5f;
 
-        public EnemyChaseState(EnemyController controller, EnemyBlackboard enemyBlackboard) : base(controller, enemyBlackboard) { }
+        public EnemyChaseState(EnemyController controller, EnemyBlackboard enemyBlackboard, EnemyAnimationManager animationManager) 
+            : base(controller, enemyBlackboard, animationManager) { }
 
         public override void OnEnter()
         {
             enemyBlackboard.Agent.isStopped = false;
+            animationManager.PlayRun();
         }
 
         public override void OnUpdate()

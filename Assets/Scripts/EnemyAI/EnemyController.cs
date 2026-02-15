@@ -13,6 +13,7 @@ namespace Scripts.EnemyAI
 
         private NavMeshAgent agent;
         private EnemyBlackboard enemyBlackboard;
+        private EnemyAnimationManager animationManager;
 
         private EnemyStateMachine _stateMachine;
 
@@ -23,12 +24,16 @@ namespace Scripts.EnemyAI
             agent.stoppingDistance = data.stoppingDistance;
             agent.updateRotation = true;
 
+            
+            animationManager = GetComponent<EnemyAnimationManager>();
+
             enemyBlackboard = new EnemyBlackboard(playerTransform, data, agent);
             CreateStates();
         }
 
         private void Start()
         {
+
             _stateMachine.ChangeState<EnemyChaseState>();
         }
 
@@ -43,10 +48,10 @@ namespace Scripts.EnemyAI
         {
             _stateMachine = new EnemyStateMachine();
 
-            _stateMachine.AddState(new EnemyChaseState(this, enemyBlackboard));
-            _stateMachine.AddState(new EnemyAnticipationState(this, enemyBlackboard));
-            _stateMachine.AddState(new EnemyAttackState(this, enemyBlackboard));
-            _stateMachine.AddState(new EnemyRecoveryState(this, enemyBlackboard));
+            _stateMachine.AddState(new EnemyChaseState(this, enemyBlackboard, animationManager));
+            _stateMachine.AddState(new EnemyAnticipationState(this, enemyBlackboard, animationManager));
+            _stateMachine.AddState(new EnemyAttackState(this, enemyBlackboard, animationManager));
+            _stateMachine.AddState(new EnemyRecoveryState(this, enemyBlackboard, animationManager));
         }
 
         public void Die()
