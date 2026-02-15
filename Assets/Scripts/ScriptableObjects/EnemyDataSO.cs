@@ -9,7 +9,9 @@ public class EnemyDataSO : ScriptableObject
 
     [Header("Combat")]
     public float attackRange = 2f;
-    public float anticipationDuration = 0.5f;
+    public float anticipationDuration = 0.1f;
     public float recoveryDuration = 1.0f;
     public int damage = 1;
+
+    public LayerMask playerLayer;
 }

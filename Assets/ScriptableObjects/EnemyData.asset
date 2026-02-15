@@ -15,6 +15,9 @@ MonoBehaviour:
   moveSpeed: 3.5
   stoppingDistance: 1.5
   attackRange: 2
-  anticipationDuration: 0.5
+  anticipationDuration: 0.1
   recoveryDuration: 1
   damage: 1
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 512

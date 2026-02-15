@@ -1,6 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
+using Scripts.EnemyAI;
 
 namespace Scripts.Combat.States
 {
@@ -36,7 +37,9 @@ namespace Scripts.Combat.States
                 Vector3 direction = (cmd.EndPos - cmd.StartPos).normalized;
 
                 direction.y = 0;
-                dashSequence.Append(CombatBlackboard.PlayerTransform.DORotateQuaternion(Quaternion.LookRotation(direction), .05f));
+
+                dashSequence.Append(CombatBlackboard.PlayerTransform.DORotateQuaternion(Quaternion.LookRotation(direction), .10f));
+                //CombatBlackboard.PlayerTransform.LookAt(direction);
                 dashSequence.AppendCallback(() =>
                 {
                     PlayAnimation(indexToSend);
@@ -85,7 +88,7 @@ namespace Scripts.Combat.States
                 int id = col.GetInstanceID();
                 if (!_hitSet.Add(id)) continue;
 
-                if (col.TryGetComponent(out SimpleEnemy enemy))
+                if (col.TryGetComponent(out EnemyController enemy))
                     enemy.Die();
             }
         }

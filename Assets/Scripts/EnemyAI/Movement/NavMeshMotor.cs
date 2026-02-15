@@ -9,11 +9,11 @@ namespace Scripts.EnemyAI
         private NavMeshAgent agent;
 
         [Header("Repath Tuning")]
-        [SerializeField] private float repathInterval = 0.12f;        // saniye
-        [SerializeField] private float destinationThreshold = 0.30f;  // metre
+        [SerializeField] private float repathInterval = 0.12f;
+        [SerializeField] private float destinationThreshold = 0.30f;
 
         [Header("Follow Smoothing")]
-        [SerializeField] private float followSmoothing = 10f;         // 6-12 arasý iyi baþlar
+        [SerializeField] private float followSmoothing = 10f;
 
         private float _nextRepathTime;
         private Vector3 _lastDestination;
@@ -41,7 +41,6 @@ namespace Scripts.EnemyAI
 
         public void MoveTo(Vector3 targetPos)
         {
-            // hedefi yumuþat (ani zigzaglarý törpüler)
             _smoothedTarget = Vector3.Lerp(
                 _smoothedTarget,
                 targetPos,
@@ -50,10 +49,8 @@ namespace Scripts.EnemyAI
 
             targetPos = _smoothedTarget;
 
-            // çok sýk repath yapma
             if (Time.time < _nextRepathTime) return;
 
-            // hedef yeterince deðiþmediyse repath yapma
             if ((_lastDestination - targetPos).sqrMagnitude < destinationThreshold * destinationThreshold)
                 return;
 
@@ -69,7 +66,7 @@ namespace Scripts.EnemyAI
             agent.isStopped = true;
             agent.ResetPath();
 
-            // stop sonrasý biriken hedefleri sýfýrla (snap/jitter azaltýr)
+            // stop sonrasý biriken hedefleri sýfýrla
             _nextRepathTime = 0f;
             _lastDestination = transform.position;
             _smoothedTarget = transform.position;
