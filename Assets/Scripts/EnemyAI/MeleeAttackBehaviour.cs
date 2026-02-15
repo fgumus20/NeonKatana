@@ -9,7 +9,7 @@ namespace Scripts.EnemyAI
         {
             animManager.PlayAttack();
 
-            DOVirtual.DelayedCall(0.3f, () => PerformHitCheck(controller, blackboard));
+            PerformHitCheck(controller, blackboard);
         }
 
 

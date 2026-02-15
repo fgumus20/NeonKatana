@@ -68,14 +68,15 @@ namespace Scripts.EnemyAI
 
         public void Die()
         {
+         
             GetComponent<Collider>().enabled = false;
-
+            transform.DOKill();
             transform.DOScale(Vector3.zero, 0.2f).OnComplete(() =>
             {
                 Destroy(gameObject);
             });
 
-            Debug.Log("Enemy died: " + gameObject.name);
+            //Debug.Log("Enemy died: " + gameObject.name);
         }
     }
 
