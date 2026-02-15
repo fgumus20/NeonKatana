@@ -12,8 +12,9 @@ namespace Scripts.EnemyAI
 
         public NavMeshAgent Agent { get; private set; }
 
-        public EnemyBlackboard(Transform target, EnemyDataSO enemyData, NavMeshAgent agent) {
-        
+        public EnemyBlackboard(Transform target, EnemyDataSO enemyData, NavMeshAgent agent)
+        {
+
             this.Target = target;
             this.Data = enemyData;
             this.Agent = agent;

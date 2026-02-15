@@ -6,8 +6,7 @@ namespace Scripts.EnemyAI.States
     {
         private float _timer;
 
-        public EnemyAnticipationState(EnemyController controller, EnemyBlackboard enemyBlackboard, EnemyAnimationManager animationManager) 
-            : base(controller, enemyBlackboard,animationManager) { }
+        public EnemyAnticipationState(EnemyController controller, EnemyBlackboard enemyBlackboard) : base(controller, enemyBlackboard) { }
 
         public override void OnEnter()
         {

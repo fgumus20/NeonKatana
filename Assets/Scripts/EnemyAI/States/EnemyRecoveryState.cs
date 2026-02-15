@@ -6,8 +6,7 @@ namespace Scripts.EnemyAI.States
     {
         private float _timer;
 
-        public EnemyRecoveryState(EnemyController controller, EnemyBlackboard enemyBlackboard, EnemyAnimationManager animationManager) 
-            : base(controller, enemyBlackboard, animationManager) { }
+        public EnemyRecoveryState(EnemyController controller, EnemyBlackboard enemyBlackboard) : base(controller, enemyBlackboard) { }
 
         public override void OnEnter()
         {

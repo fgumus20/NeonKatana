@@ -12,4 +12,6 @@ public class EnemyDataSO : ScriptableObject
     public float anticipationDuration = 0.1f;
     public float recoveryDuration = 1.0f;
     public int damage = 1;
+
+    public LayerMask playerLayer;
 }

@@ -14,6 +14,7 @@ namespace Scripts.EnemyAI
         private NavMeshAgent agent;
         private EnemyBlackboard enemyBlackboard;
         private EnemyAnimationManager animationManager;
+        IAttackBehaviour attackBehaviour;
 
         private EnemyStateMachine _stateMachine;
 
@@ -27,6 +28,7 @@ namespace Scripts.EnemyAI
             
             animationManager = GetComponent<EnemyAnimationManager>();
 
+            attackBehaviour = new MeleeAttackBehaviour();
             enemyBlackboard = new EnemyBlackboard(playerTransform, data, agent);
             CreateStates();
         }
@@ -48,10 +50,20 @@ namespace Scripts.EnemyAI
         {
             _stateMachine = new EnemyStateMachine();
 
-            _stateMachine.AddState(new EnemyChaseState(this, enemyBlackboard, animationManager));
-            _stateMachine.AddState(new EnemyAnticipationState(this, enemyBlackboard, animationManager));
-            _stateMachine.AddState(new EnemyAttackState(this, enemyBlackboard, animationManager));
-            _stateMachine.AddState(new EnemyRecoveryState(this, enemyBlackboard, animationManager));
+            _stateMachine.AddState(new EnemyChaseState(this, enemyBlackboard));
+            _stateMachine.AddState(new EnemyAnticipationState(this, enemyBlackboard));
+            _stateMachine.AddState(new EnemyAttackState(this, enemyBlackboard));
+            _stateMachine.AddState(new EnemyRecoveryState(this, enemyBlackboard));
+        }
+
+
+        public void ExecuteAttack() {
+            attackBehaviour.ExecuteAttack(this, enemyBlackboard, animationManager);
+        }
+
+        public void PlayRun()
+        {
+            animationManager.PlayRun();
         }
 
         public void Die()

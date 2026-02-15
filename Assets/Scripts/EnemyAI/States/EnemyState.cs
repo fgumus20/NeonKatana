@@ -4,13 +4,11 @@ namespace Scripts.EnemyAI.States
     {
         protected readonly EnemyController controller;
         protected EnemyBlackboard enemyBlackboard;
-        protected EnemyAnimationManager animationManager;
 
-        public EnemyState(EnemyController controller, EnemyBlackboard enemyBlackboard, EnemyAnimationManager animationManager)
+        public EnemyState(EnemyController controller, EnemyBlackboard enemyBlackboard)
         {
             this.controller = controller;
             this.enemyBlackboard = enemyBlackboard;
-            this.animationManager = animationManager;
         }
 
         public abstract void OnEnter();
