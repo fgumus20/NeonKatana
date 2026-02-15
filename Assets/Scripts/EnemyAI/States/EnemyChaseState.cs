@@ -14,8 +14,17 @@ namespace Scripts.EnemyAI.States
 
         public override void OnEnter()
         {
-            enemyBlackboard.Agent.isStopped = false;
-            controller.PlayRun();
+            float distance = Vector3.Distance(controller.transform.position, enemyBlackboard.Target.position);
+
+            if (distance <= enemyBlackboard.Data.attackRange)
+            {
+                controller.ChangeState<EnemyAnticipationState>();
+            } else
+            {
+                enemyBlackboard.Agent.isStopped = false;
+                controller.PlayRun();
+            }
+
         }
 
         public override void OnUpdate()
