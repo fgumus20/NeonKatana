@@ -10,42 +10,53 @@ namespace Scripts.EnemyAI
     public class EnemyController : MonoBehaviour
     {
         [SerializeField] private EnemyDataSO data;
-        [SerializeField] private Transform playerTransform;
+        private Transform playerTransform;
 
         private NavMeshAgent agent;
         private EnemyBlackboard enemyBlackboard;
         private EnemyAnimationManager animationManager;
-        IAttackBehaviour attackBehaviour;
-
+        private IAttackBehaviour attackBehaviour;
         private EnemyStateMachine _stateMachine;
-
         private EnemyVfxController _vfxController;
+        private Collider _collider;
+
         private void Awake()
         {
+            playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
             agent = GetComponent<NavMeshAgent>();
+            _collider = GetComponent<Collider>();
+            _vfxController = GetComponent<EnemyVfxController>();
+            animationManager = GetComponent<EnemyAnimationManager>();
+
             agent.speed = data.moveSpeed;
             agent.stoppingDistance = data.stoppingDistance;
             agent.updateRotation = true;
 
-            
-            animationManager = GetComponent<EnemyAnimationManager>();
-
             attackBehaviour = new MeleeAttackBehaviour();
             enemyBlackboard = new EnemyBlackboard(playerTransform, data, agent);
 
-            _vfxController = GetComponent<EnemyVfxController>();
             CreateStates();
         }
 
-        private void Start()
+        private void OnEnable()
         {
+            transform.DOKill();
+            transform.localScale = Vector3.one;
 
-            _stateMachine.ChangeState<EnemyChaseState>();
+            if (_collider != null) _collider.enabled = true;
+
+            if (agent != null)
+            {
+                agent.enabled = true;
+                agent.isStopped = false;
+            }
+
+            _stateMachine?.ChangeState<EnemyChaseState>();
         }
 
         private void Update()
         {
-            _stateMachine.Update();
+            _stateMachine?.Update();
         }
 
         public void ChangeState<T>() where T : EnemyState => _stateMachine.ChangeState<T>();
@@ -60,8 +71,8 @@ namespace Scripts.EnemyAI
             _stateMachine.AddState(new EnemyRecoveryState(this, enemyBlackboard));
         }
 
-
-        public void ExecuteAttack() {
+        public void ExecuteAttack()
+        {
             attackBehaviour.ExecuteAttack(this, enemyBlackboard, animationManager);
         }
 
@@ -69,20 +80,29 @@ namespace Scripts.EnemyAI
         {
             animationManager.PlayRun();
         }
+        public void SetSpawnPoint(Vector3 position)
+        {
+            if (agent != null && agent.isActiveAndEnabled)
+            {
+                agent.Warp(position);
+            }
+            else
+            {
+                transform.position = position;
+            }
+        }
 
         public void Die()
         {
-         
-            GetComponent<Collider>().enabled = false;
-            _vfxController.PlayDeathEffect();
+            if (_collider != null) _collider.enabled = false;
+
+            _vfxController?.PlayDeathEffect();
+
             transform.DOKill();
             transform.DOScale(Vector3.zero, 0.2f).OnComplete(() =>
             {
-                Destroy(gameObject);
+                EnemyPool.Instance.ReturnEnemy(gameObject);
             });
-
-            //Debug.Log("Enemy died: " + gameObject.name);
         }
     }
-
 }

@@ -12,16 +12,23 @@ namespace Scripts.EnemyAI
 
         void Awake()
         {
-            _animator = GetComponentInChildren<Animator>();
+            InitializeAnimator();
         }
 
+        private void InitializeAnimator()
+        {
+            if (_animator != null) return;
+            _animator = GetComponentInChildren<Animator>();
+        }
         public void PlayRun()
         {
+            InitializeAnimator();
             _animator.SetTrigger(RunTrigger);
         }
 
         public void PlayAttack()
         {
+            InitializeAnimator();
             _animator.SetTrigger(AttackTrigger);
         }
     }

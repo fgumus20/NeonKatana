@@ -93,7 +93,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 30d073cc30433d74e903b464e8b0204c, type: 2}
-  playerTransform: {fileID: 0}
+  playerTransform: {fileID: 6831616774007382732, guid: fed3abdbf4dc1cd40a00796b4f66c43c,
+    type: 3}
 --- !u!114 &1043802130428155734
 MonoBehaviour:
   m_ObjectHideFlags: 0
