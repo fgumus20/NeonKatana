@@ -1,5 +1,6 @@
 using DG.Tweening;
 using Scripts.EnemyAI.States;
+using Scripts.EnemyAI.Vfx;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -18,6 +19,7 @@ namespace Scripts.EnemyAI
 
         private EnemyStateMachine _stateMachine;
 
+        private EnemyVfxController _vfxController;
         private void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
@@ -30,6 +32,8 @@ namespace Scripts.EnemyAI
 
             attackBehaviour = new MeleeAttackBehaviour();
             enemyBlackboard = new EnemyBlackboard(playerTransform, data, agent);
+
+            _vfxController = GetComponent<EnemyVfxController>();
             CreateStates();
         }
 
@@ -70,6 +74,7 @@ namespace Scripts.EnemyAI
         {
          
             GetComponent<Collider>().enabled = false;
+            _vfxController.PlayDeathEffect();
             transform.DOKill();
             transform.DOScale(Vector3.zero, 0.2f).OnComplete(() =>
             {
