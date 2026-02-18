@@ -22,7 +22,6 @@ namespace Scripts.EnemyAI
 
         private void Awake()
         {
-            playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
             agent = GetComponent<NavMeshAgent>();
             _collider = GetComponent<Collider>();
             _vfxController = GetComponent<EnemyVfxController>();
@@ -33,7 +32,7 @@ namespace Scripts.EnemyAI
             agent.updateRotation = true;
 
             attackBehaviour = new MeleeAttackBehaviour();
-            enemyBlackboard = new EnemyBlackboard(playerTransform, data, agent);
+            enemyBlackboard = new EnemyBlackboard(null, data, agent);
 
             CreateStates();
         }
@@ -49,9 +48,8 @@ namespace Scripts.EnemyAI
             {
                 agent.enabled = true;
                 agent.isStopped = false;
+                agent.ResetPath();
             }
-
-            _stateMachine?.ChangeState<EnemyChaseState>();
         }
 
         private void Update()
@@ -80,23 +78,23 @@ namespace Scripts.EnemyAI
         {
             animationManager.PlayRun();
         }
-        public void SetSpawnPoint(Vector3 position)
+
+        public void ResetForSpawn(Transform player, Vector3 position)
         {
-            if (agent != null && agent.isActiveAndEnabled)
-            {
-                agent.Warp(position);
-            }
-            else
-            {
-                transform.position = position;
-            }
+            playerTransform = player;
+            enemyBlackboard.SetTarget(playerTransform);
+            agent.Warp(position);
+
+            _stateMachine.ChangeState<EnemyChaseState>();
         }
+
 
         public void Die()
         {
             if (_collider != null) _collider.enabled = false;
 
             _vfxController?.PlayDeathEffect();
+            GameEvents.RaiseEnemyDied(gameObject);
 
             transform.DOKill();
             transform.DOScale(Vector3.zero, 0.2f).OnComplete(() =>

@@ -6,29 +6,47 @@ namespace Scripts.Level
     {
         public static LevelManager Instance;
         [SerializeField] private WaveManager waveManager;
-        [SerializeField] private LevelDataSO currentLevelData; // Bölüm ayarlarý buradan okunur
+        [SerializeField] private LevelDataSO currentLevelData;
 
         private int _currentWaveIndex = 0;
 
-        private void Start() => StartNextWave();
+        private int _enemiesAlive;
+
+        private void Start() 
+        {
+            StartNextWave();
+        } 
+
+        private void OnEnable()
+        {
+            GameEvents.EnemyDied += HandleEnemyDied;
+        }
+
+        private void OnDisable()
+        {
+            GameEvents.EnemyDied -= HandleEnemyDied;
+        }
+
+        private void HandleEnemyDied(GameObject enemy)
+        {
+            _enemiesAlive--;
+            if (_enemiesAlive <= 0)
+                StartNextWave();
+        }
+        
 
         public void StartNextWave()
         {
             if (_currentWaveIndex < currentLevelData.waves.Count)
             {
                 var waveInfo = currentLevelData.waves[_currentWaveIndex];
-                waveManager.SpawnWave(waveInfo);
+                _enemiesAlive = waveManager.SpawnWave(waveInfo);
                 _currentWaveIndex++;
             }
             else
             {
-                Debug.Log("Bölüm Tamamlandý!");
+                Debug.Log("Level Completed!");
             }
-        }
-
-        public void OnEnemyKilled()
-        {
-            // Sahadaki düþman sayýsýný kontrol et, 0 ise StartNextWave() çaðýr
         }
     }
 

@@ -21,3 +21,12 @@ MonoBehaviour:
     - {x: 12, y: 1, z: 7}
     - {x: -12, y: 1, z: -7}
     - {x: 12, y: 1, z: -7}
+  - waveName: Wave 2
+    enemiesInWave:
+    - enemyType: melee
+      count: 6
+    spawnPositions:
+    - {x: 12, y: 1, z: 7}
+    - {x: -12, y: 1, z: -7}
+    - {x: 12, y: 1, z: -7}
+    - {x: 16, y: 1, z: -7}
