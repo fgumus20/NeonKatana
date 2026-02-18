@@ -41,6 +41,12 @@ namespace Scripts.Level
             {
                 var waveInfo = currentLevelData.waves[_currentWaveIndex];
                 _enemiesAlive = waveManager.SpawnWave(waveInfo);
+
+                int waveNumber = _currentWaveIndex + 1;
+                int totalWaves = currentLevelData.waves.Count;
+
+                GameEvents.RaiseWaveStarted(waveNumber, totalWaves, _enemiesAlive);
+
                 _currentWaveIndex++;
             }
             else

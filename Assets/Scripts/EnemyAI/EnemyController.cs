@@ -47,8 +47,6 @@ namespace Scripts.EnemyAI
             if (agent != null)
             {
                 agent.enabled = true;
-                agent.isStopped = false;
-                agent.ResetPath();
             }
         }
 
@@ -94,6 +92,7 @@ namespace Scripts.EnemyAI
             if (_collider != null) _collider.enabled = false;
 
             _vfxController?.PlayDeathEffect();
+ 
             GameEvents.RaiseEnemyDied(gameObject);
 
             transform.DOKill();
