@@ -20,6 +20,8 @@ namespace Scripts.EnemyAI
             this.Agent = agent;
         }
 
+        public void SetTarget(Transform target) => Target = target;
+
     }
 
 }

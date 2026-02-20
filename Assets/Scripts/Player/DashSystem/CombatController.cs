@@ -2,6 +2,7 @@ using UnityEngine;
 using Scripts.Combat.States;
 using System.Collections.Generic;
 using Scripts.Combat.Vfx;
+using System;
 
 namespace Scripts.Combat
 {
@@ -9,26 +10,23 @@ namespace Scripts.Combat
     {
 
         [Header("--- Modules ---")]
-        [SerializeField] private Animator animator;
-        [SerializeField] private CombatVfxController combatVfxController;
         [SerializeField] private PlayerStatsSO stats;
-
-
         [SerializeField] private LineRenderer lineRenderer;
         
-        [SerializeField] private GameObject nodePrefab;//TO DO: create node pool to manage plan state
+        [SerializeField] private GameObject nodePrefab;
         private readonly List<GameObject> spawnedNodes = new List<GameObject>();
 
         private CombatState currentState;
         private CombatBlackboard blackboard;
 
+        public event Action<int> OnDashSegmentStarted;
+        public event Action OnDashSequenceCompleted;
 
         private void Start()
         {
             GameManager.Instance.OnStateChanged += HandleStateChanged;
-            combatVfxController = GetComponentInChildren<CombatVfxController>();
             Rigidbody rb = GetComponent<Rigidbody>();
-            blackboard = new CombatBlackboard(transform, rb, animator, stats,combatVfxController);
+            blackboard = new CombatBlackboard(transform, rb, stats);
         }
 
         private void Update()
@@ -70,6 +68,17 @@ namespace Scripts.Combat
 
             spawnedNodes.Clear();
         }
+
+        public void NotifyDashSegment(int index)
+        {
+            OnDashSegmentStarted?.Invoke(index);
+        }
+
+        public void NotifyDashEnded()
+        {
+            OnDashSequenceCompleted?.Invoke();
+        }
+
     }
 
 }

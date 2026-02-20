@@ -5,32 +5,39 @@ namespace Scripts.Combat.Vfx
     public class CombatVfxController : MonoBehaviour
     {
         [Header("Sword Trail")]
-        [SerializeField] private TrailRenderer swordTrail;   // kýlýcýn child’ýndaki trail
-
+        [SerializeField] private TrailRenderer swordTrail;
+        private CombatController _combatController;
         private void Awake()
         {
             swordTrail.emitting = false;
+            _combatController = GetComponentInParent<CombatController>();
         }
 
-        public void PlayDashSegmentEffects()
+        private void OnEnable()
         {
-
-            EnableTrail();
+            _combatController.OnDashSegmentStarted += HandleVfx;
+            _combatController.OnDashSequenceCompleted += StopVfx;
         }
 
-        public void StopDashSegmentEffects()
+        private void OnDisable()
         {
-            DisableTrail();
+            _combatController.OnDashSegmentStarted -= HandleVfx;
+            _combatController.OnDashSequenceCompleted -= StopVfx;
         }
 
-        private void EnableTrail()
+        private void HandleVfx(int index)
         {
-            swordTrail.emitting = true;
+           EnableSwordTrail();
         }
 
-        private void DisableTrail()
+        private void StopVfx()
         {
             swordTrail.emitting = false;
+        }
+
+        private void EnableSwordTrail()
+        {
+            swordTrail.emitting = true;
         }
 
     }
