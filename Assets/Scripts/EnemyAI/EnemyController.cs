@@ -1,6 +1,5 @@
 using DG.Tweening;
 using Scripts.EnemyAI.States;
-using Scripts.EnemyAI.Vfx;
 using UnityEngine;
 using UnityEngine.AI;
 

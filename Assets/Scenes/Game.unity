@@ -1863,7 +1863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d2101c7ce52b04fbc9642f086eb55c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyDeathVfx: {fileID: 1000161576955944904, guid: a53512d1ed15d9c489ce62250611e3b5,
+  enemyDeathVfx: {fileID: 2132354236831047770, guid: a53512d1ed15d9c489ce62250611e3b5,
     type: 3}
   shakeIntensity: 0.3
   shakeDuration: 0.15
