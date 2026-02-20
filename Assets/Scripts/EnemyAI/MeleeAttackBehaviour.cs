@@ -21,7 +21,7 @@ namespace Scripts.EnemyAI
             {
                 var hp = hits[i].GetComponentInParent<PlayerHealth>();
                 hp.TakeDamage(1);
-                return;
+                break;
             }
         }
     }
