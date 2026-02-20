@@ -27,12 +27,17 @@ namespace Scripts.Combat.Vfx
 
         private void HandleVfx(int index)
         {
-            swordTrail.emitting = true;
+           EnableSwordTrail();
         }
 
         private void StopVfx()
         {
             swordTrail.emitting = false;
+        }
+
+        private void EnableSwordTrail()
+        {
+            swordTrail.emitting = true;
         }
 
     }

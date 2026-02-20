@@ -18,16 +18,16 @@ namespace Scripts.Player
 
         private void OnEnable()
         {
-            _combatController.OnDashSegmentStarted += HandleAnimation;
+            _combatController.OnDashSegmentStarted += HandleDashAnimation;
         }
 
         private void OnDisable()
         {
-            _combatController.OnDashSegmentStarted -= HandleAnimation;
+            _combatController.OnDashSegmentStarted -= HandleDashAnimation;
         }
 
 
-        private void HandleAnimation(int index)
+        private void HandleDashAnimation(int index)
         {
             _animator.SetInteger("animIndex", index % 2);
             _animator.SetTrigger("attack");

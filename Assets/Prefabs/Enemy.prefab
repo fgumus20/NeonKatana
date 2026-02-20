@@ -112,13 +112,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5178946475606211924}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b4aa0f28d17c774fa36788c5f8686a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   deathParticles: {fileID: 2403719191265688386, guid: 0905714e10f108641b55b2407d67f99c,
     type: 3}
+  shakeIntensity: 0.2
+  shakeDuration: 0.15
+  shakeCooldown: 0.2
 --- !u!1001 &6890817135127618258
 PrefabInstance:
   m_ObjectHideFlags: 0

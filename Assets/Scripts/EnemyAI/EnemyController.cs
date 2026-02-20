@@ -17,14 +17,12 @@ namespace Scripts.EnemyAI
         private EnemyAnimationManager animationManager;
         private IAttackBehaviour attackBehaviour;
         private EnemyStateMachine _stateMachine;
-        private EnemyVfxController _vfxController;
         private Collider _collider;
 
         private void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
             _collider = GetComponent<Collider>();
-            _vfxController = GetComponent<EnemyVfxController>();
             animationManager = GetComponent<EnemyAnimationManager>();
 
             agent.speed = data.moveSpeed;
@@ -90,8 +88,6 @@ namespace Scripts.EnemyAI
         public void Die()
         {
             if (_collider != null) _collider.enabled = false;
-
-            _vfxController?.PlayDeathEffect();
  
             GameEvents.RaiseEnemyDied(gameObject);
 
