@@ -5,10 +5,10 @@ namespace Scripts.Combat
         protected readonly CombatBlackboard CombatBlackboard;
         protected CombatController CombatController;
 
-        protected CombatState(CombatController controller, CombatBlackboard blackboard)
+        protected CombatState(CombatController CombatController, CombatBlackboard blackboard)
         {
             CombatBlackboard = blackboard;
-            CombatController = controller;
+            this.CombatController = CombatController;
         }
 
         public abstract void OnEnter();

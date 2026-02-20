@@ -1,3 +1,4 @@
+using Scripts.Player;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour

@@ -11,7 +11,7 @@ namespace Scripts.Combat.States
         private int remainingDashCount;
         private LineRenderer lineRenderer;
 
-        public PlanState(CombatController controller, CombatBlackboard blackboard, LineRenderer lineRenderer) : base(controller, blackboard)
+        public PlanState(CombatController CombatController, CombatBlackboard blackboard, LineRenderer lineRenderer) : base(CombatController, blackboard)
         {
             this.lineRenderer = lineRenderer;
         }
