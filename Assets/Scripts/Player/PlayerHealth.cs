@@ -5,7 +5,7 @@ namespace Scripts.Player
 
     public class PlayerHealth : MonoBehaviour
     {
-        [SerializeField] private int maxHp = 3;
+        [SerializeField] private int maxHp = 10;
         [SerializeField] private float invulnSeconds = 0.5f;
 
         public int CurrentHp { get; private set; }
