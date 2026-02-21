@@ -5,7 +5,6 @@ public class HUDController : MonoBehaviour
 {
     [SerializeField] private TMP_Text waveText;
     [SerializeField] private TMP_Text enemiesText;
-    [SerializeField] private TMP_Text hpText;
 
     private int enemiesAlive;
 
@@ -13,14 +12,12 @@ public class HUDController : MonoBehaviour
     {
         GameEvents.WaveStarted += OnWaveStarted;
         GameEvents.EnemyDied += OnEnemyDied;
-        GameEvents.PlayerHpChanged += OnHpChanged;
     }
 
     private void OnDisable()
     {
         GameEvents.WaveStarted -= OnWaveStarted;
         GameEvents.EnemyDied -= OnEnemyDied;
-        GameEvents.PlayerHpChanged -= OnHpChanged;
     }
 
     private void OnWaveStarted(int waveIndex, int totalWaves, int enemiesInWave)
@@ -37,8 +34,4 @@ public class HUDController : MonoBehaviour
         if (enemiesText) enemiesText.text = $"ENEMIES: {enemiesAlive}";
     }
 
-    private void OnHpChanged(int current, int max)
-    {
-        if (hpText) hpText.text = $"HP: {current}";
-    }
 }
