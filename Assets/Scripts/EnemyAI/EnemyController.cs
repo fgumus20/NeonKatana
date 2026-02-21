@@ -41,10 +41,8 @@ namespace Scripts.EnemyAI
 
             if (_collider != null) _collider.enabled = true;
 
-            if (agent != null)
-            {
-                agent.enabled = true;
-            }
+            if (agent != null) agent.enabled = false;
+            
         }
 
         private void Update()
@@ -78,6 +76,9 @@ namespace Scripts.EnemyAI
         {
             playerTransform = player;
             enemyBlackboard.SetTarget(playerTransform);
+            transform.position = position;
+
+            agent.enabled = true;
             agent.Warp(position);
 
             _stateMachine.ChangeState<EnemyChaseState>();
@@ -87,12 +88,20 @@ namespace Scripts.EnemyAI
         public void Die()
         {
             if (_collider != null) _collider.enabled = false;
- 
+            var tempMachine = _stateMachine;
+            _stateMachine = null;
+            if (agent != null && agent.enabled)
+            {
+                agent.isStopped = true;
+                agent.enabled = false;
+            }
+
             GameEvents.RaiseEnemyDied(gameObject);
 
             transform.DOKill();
             transform.DOScale(Vector3.zero, 0.2f).OnComplete(() =>
             {
+                _stateMachine = tempMachine;
                 EnemyPool.Instance.ReturnEnemy(gameObject);
             });
         }
