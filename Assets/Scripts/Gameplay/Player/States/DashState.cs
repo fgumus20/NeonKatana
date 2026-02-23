@@ -51,7 +51,7 @@ namespace Scripts.Combat.States
             dashSequence.OnComplete(() =>
             {
                 CombatController.NotifyDashEnded();
-                GameManager.Instance.ChangeState(GameState.Roaming);
+                GamePlayManager.Instance.ChangeState(GameState.Roaming);
             });
         }
 

@@ -20,13 +20,13 @@ public class PlayerMovement : MonoBehaviour
 
     void OnEnable()
     {
-        GameManager.Instance.OnStateChanged += HandleStateChanged;
-        HandleStateChanged(GameManager.Instance.CurrentState);
+        GamePlayManager.Instance.OnStateChanged += HandleStateChanged;
+        HandleStateChanged(GamePlayManager.Instance.CurrentState);
     }
 
     void OnDisable()
     {
-        GameManager.Instance.OnStateChanged -= HandleStateChanged;
+        GamePlayManager.Instance.OnStateChanged -= HandleStateChanged;
     }
 
     private void HandleStateChanged(GameState state)

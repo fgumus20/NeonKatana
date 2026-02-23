@@ -7,9 +7,9 @@ public enum GameState
     Combat
 }
 
-public class GameManager : MonoBehaviour
+public class GamePlayManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
+    public static GamePlayManager Instance { get; private set; }
     public GameState CurrentState { get; private set; }
 
     public event Action<GameState> OnStateChanged;
@@ -19,7 +19,6 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            //DontDestroyOnLoad(gameObject);
         }
         else
         {

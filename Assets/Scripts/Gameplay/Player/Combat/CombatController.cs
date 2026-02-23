@@ -30,20 +30,20 @@ namespace Scripts.Combat
 
         private void OnEnable()
         {
-            if (GameManager.Instance != null)
-                GameManager.Instance.OnStateChanged += HandleStateChanged;
+            if (GamePlayManager.Instance != null)
+                GamePlayManager.Instance.OnStateChanged += HandleStateChanged;
         }
 
         private void OnDisable()
         {
-            if (GameManager.Instance != null)
-                GameManager.Instance.OnStateChanged -= HandleStateChanged;
+            if (GamePlayManager.Instance != null)
+                GamePlayManager.Instance.OnStateChanged -= HandleStateChanged;
         }
 
         private void Update()
         {
-            if (GameManager.Instance == null) return;
-            if (GameManager.Instance.CurrentState != GameState.Combat) return;
+            if (GamePlayManager.Instance == null) return;
+            if (GamePlayManager.Instance.CurrentState != GameState.Combat) return;
 
             currentState?.Update();
 
