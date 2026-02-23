@@ -10,6 +10,9 @@ public static class GameEvents
         EnemyDied?.Invoke(enemy);
     }
 
+    public static event System.Action<int> EnemiesAliveChanged;
+    public static void RaiseEnemiesAliveChanged(int alive) => EnemiesAliveChanged?.Invoke(alive);
+
     public static event Action<int, int, int> WaveStarted;
     public static void RaiseWaveStarted(int waveIndex, int totalWaves, int enemiesInWave)
         => WaveStarted?.Invoke(waveIndex, totalWaves, enemiesInWave);
@@ -21,5 +24,7 @@ public static class GameEvents
     public static void RaisePlayerHpChanged(int current, int max)
         => PlayerHpChanged?.Invoke(current, max);
 
+    public static event System.Action LevelCompleted;
+    public static void RaiseLevelCompleted() => LevelCompleted?.Invoke();
 
 }

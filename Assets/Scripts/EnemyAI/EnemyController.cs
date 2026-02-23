@@ -103,7 +103,9 @@ namespace Scripts.EnemyAI
             {
                 _stateMachine = tempMachine;
                 EnemyPool.Instance.ReturnEnemy(gameObject);
+                
             });
+
         }
     }
 }
