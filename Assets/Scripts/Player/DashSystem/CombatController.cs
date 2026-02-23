@@ -24,17 +24,28 @@ namespace Scripts.Combat
 
         private void Start()
         {
-            GameManager.Instance.OnStateChanged += HandleStateChanged;
             Rigidbody rb = GetComponent<Rigidbody>();
             blackboard = new CombatBlackboard(transform, rb, stats);
         }
 
+        private void OnEnable()
+        {
+            if (GameManager.Instance != null)
+                GameManager.Instance.OnStateChanged += HandleStateChanged;
+        }
+
+        private void OnDisable()
+        {
+            if (GameManager.Instance != null)
+                GameManager.Instance.OnStateChanged -= HandleStateChanged;
+        }
+
         private void Update()
         {
-            if (GameManager.Instance.CurrentState == GameState.Combat)
-            {
-                currentState.Update();
-            }
+            if (GameManager.Instance == null) return;
+            if (GameManager.Instance.CurrentState != GameState.Combat) return;
+
+            currentState?.Update();
 
         }
 
