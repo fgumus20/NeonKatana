@@ -11,27 +11,24 @@ public class HUDController : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.WaveStarted += OnWaveStarted;
-        GameEvents.EnemyDied += OnEnemyDied;
+        GameEvents.EnemiesAliveChanged += OnEnemiesAliveChanged;
     }
 
     private void OnDisable()
     {
         GameEvents.WaveStarted -= OnWaveStarted;
-        GameEvents.EnemyDied -= OnEnemyDied;
+        GameEvents.EnemiesAliveChanged -= OnEnemiesAliveChanged;
     }
 
-    private void OnWaveStarted(int waveIndex, int totalWaves, int enemiesInWave)
+    private void OnWaveStarted(int wave, int total, int enemiesAlive)
     {
-        enemiesAlive = enemiesInWave;
-
-        if (waveText) waveText.text = $"WAVE: {waveIndex}/{totalWaves}";
-        if (enemiesText) enemiesText.text = $"ENEMIES: {enemiesAlive}";
+        waveText.text = $"WAVE: {wave}/{total}";
+        enemiesText.text = $"ENEMIES: {enemiesAlive}";
     }
 
-    private void OnEnemyDied(GameObject _)
+    private void OnEnemiesAliveChanged(int alive)
     {
-        enemiesAlive = Mathf.Max(0, enemiesAlive - 1);
-        if (enemiesText) enemiesText.text = $"ENEMIES: {enemiesAlive}";
+        enemiesText.text = $"ENEMIES: {alive}";
     }
 
 }

@@ -12,10 +12,18 @@ namespace Scripts.Level
 
         private int _enemiesAlive;
 
-        private void Start() 
+
+        private void Awake()
         {
-            StartNextWave();
-        } 
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
 
         private void OnEnable()
         {
@@ -30,10 +38,21 @@ namespace Scripts.Level
         private void HandleEnemyDied(GameObject enemy)
         {
             _enemiesAlive--;
+
             if (_enemiesAlive <= 0)
+            {
                 StartNextWave();
+                return;
+            }
+
+            GameEvents.RaiseEnemiesAliveChanged(_enemiesAlive);
         }
-        
+
+        public void BeginLevel()
+        {
+            _currentWaveIndex = 0;
+            StartNextWave();
+        }
 
         public void StartNextWave()
         {
@@ -51,6 +70,7 @@ namespace Scripts.Level
             }
             else
             {
+                GameEvents.RaiseLevelCompleted();
                 Debug.Log("Level Completed!");
             }
         }
