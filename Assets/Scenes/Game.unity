@@ -142,7 +142,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7907256
 RectTransform:
   m_ObjectHideFlags: 0
@@ -346,6 +346,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 159987560}
+  - component: {fileID: 159987561}
   m_Layer: 5
   m_Name: ControlsRoot
   m_TagString: Untagged
@@ -374,6 +375,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &159987561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159987559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fab26664196c84c8037baf9f309df3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 159987560}
+  startOffset: {x: 0, y: -300}
+  duration: 0.6
+  easeIn: 9
+  easeOut: 8
 --- !u!1 &205956020
 GameObject:
   m_ObjectHideFlags: 0
@@ -1364,6 +1382,7 @@ GameObject:
   m_Component:
   - component: {fileID: 369920734}
   - component: {fileID: 369920735}
+  - component: {fileID: 369920736}
   m_Layer: 5
   m_Name: HUDRoot
   m_TagString: Untagged
@@ -1407,6 +1426,23 @@ MonoBehaviour:
   waveText: {fileID: 2075474204}
   enemiesText: {fileID: 1655736886}
   waveBanner: {fileID: 7907258}
+--- !u!114 &369920736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369920733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fab26664196c84c8037baf9f309df3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 369920734}
+  startOffset: {x: -180, y: 0}
+  duration: 0.6
+  easeIn: 9
+  easeOut: 8
 --- !u!1 &392340957
 GameObject:
   m_ObjectHideFlags: 0
@@ -3109,8 +3145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f57c9fb1ad603bf4a88acab42037c1cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hudRoot: {fileID: 369920733}
-  controlsRoot: {fileID: 159987559}
+  hudIntro: {fileID: 369920736}
+  controlsIntro: {fileID: 159987561}
   startPanel: {fileID: 695474103}
   winPanel: {fileID: 1577886706}
   losePanel: {fileID: 1214651060}

@@ -4,9 +4,9 @@ using Scripts.Level;
 
 public class GameFlowController : MonoBehaviour
 {
-    [Header("Roots")]
-    [SerializeField] private GameObject hudRoot;
-    [SerializeField] private GameObject controlsRoot;
+    [Header("Animators")]
+    [SerializeField] private UIIntroAnimator hudIntro;
+    [SerializeField] private UIIntroAnimator controlsIntro;
 
     [Header("Panels")]
     [SerializeField] private GameObject startPanel;
@@ -34,8 +34,8 @@ public class GameFlowController : MonoBehaviour
     {
         Time.timeScale = 0f;
 
-        hudRoot.SetActive(false);
-        controlsRoot.SetActive(false);
+        hudIntro.PlayOut();
+        controlsIntro.PlayOut();
 
         startPanel.SetActive(true);
         winPanel.SetActive(false);
@@ -50,8 +50,8 @@ public class GameFlowController : MonoBehaviour
         winPanel.SetActive(false);
         losePanel.SetActive(false);
 
-        hudRoot.SetActive(true);
-        controlsRoot.SetActive(true);
+        hudIntro.PlayIn();
+        controlsIntro.PlayIn();
 
         LevelManager.Instance.BeginLevel();
     }
@@ -60,8 +60,8 @@ public class GameFlowController : MonoBehaviour
     {
         Time.timeScale = 0f;
 
-        hudRoot.SetActive(false);
-        controlsRoot.SetActive(false);
+        hudIntro.PlayOut();
+        controlsIntro.PlayOut();
 
         winPanel.SetActive(true);
         losePanel.SetActive(false);
@@ -72,8 +72,8 @@ public class GameFlowController : MonoBehaviour
     {
         Time.timeScale = 0f;
 
-        hudRoot.SetActive(false);
-        controlsRoot.SetActive(false);
+        hudIntro.PlayOut();
+        controlsIntro.PlayOut();
 
         losePanel.SetActive(true);
         winPanel.SetActive(false);
