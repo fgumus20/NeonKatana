@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace Scripts.Level
@@ -5,24 +6,21 @@ namespace Scripts.Level
     public class LevelManager : MonoBehaviour
     {
         public static LevelManager Instance;
+
         [SerializeField] private WaveManager waveManager;
         [SerializeField] private LevelDataSO currentLevelData;
 
+        [Header("Transitions")]
+        [SerializeField] private float nextWaveDelay = 1f;
+        [SerializeField] private float levelCompleteDelay = 0.7f;
+
         private int _currentWaveIndex = 0;
-
         private int _enemiesAlive;
-
+        private bool _transitioning;
 
         private void Awake()
         {
-            if (Instance == null)
-            {
-                Instance = this;
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            Instance = this;
         }
 
         private void OnEnable()
@@ -35,22 +33,33 @@ namespace Scripts.Level
             GameEvents.EnemyDied -= HandleEnemyDied;
         }
 
+        public void BeginLevel()
+        {
+            _transitioning = false;
+            _currentWaveIndex = 0;
+            StartNextWave();
+        }
+
         private void HandleEnemyDied(GameObject enemy)
         {
+            if (_transitioning) return;
+
             _enemiesAlive--;
+            GameEvents.RaiseEnemiesAliveChanged(_enemiesAlive);
 
             if (_enemiesAlive <= 0)
             {
-                StartNextWave();
-                return;
+                _transitioning = true;
+                StartCoroutine(StartNextWaveAfterDelay(nextWaveDelay));
             }
 
-            GameEvents.RaiseEnemiesAliveChanged(_enemiesAlive);
+
         }
 
-        public void BeginLevel()
+        private IEnumerator StartNextWaveAfterDelay(float delay)
         {
-            _currentWaveIndex = 0;
+            yield return new WaitForSecondsRealtime(delay);
+            _transitioning = false;
             StartNextWave();
         }
 
@@ -70,10 +79,15 @@ namespace Scripts.Level
             }
             else
             {
-                GameEvents.RaiseLevelCompleted();
-                Debug.Log("Level Completed!");
+                StartCoroutine(LevelCompletedAfterDelay(levelCompleteDelay));
             }
         }
-    }
 
+        private IEnumerator LevelCompletedAfterDelay(float delay)
+        {
+            yield return new WaitForSecondsRealtime(delay);
+            Debug.Log("Level Completed!");
+            GameEvents.RaiseLevelCompleted();
+        }
+    }
 }

@@ -89,7 +89,6 @@ public class GameFlowController : MonoBehaviour
 
     public void Next()
     {
-        Debug.Log("a");
         Retry();
     }
 }
