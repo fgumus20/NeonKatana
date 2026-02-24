@@ -18,7 +18,14 @@ Neon Katana is a top-down action prototype built in Unity, focused on modular co
 - Clearing all waves completes the level.
 
 ---
+## Screenshots
+![Gameplay 1](Readme_data/Screenshots/Start_game.png)
+![Gameplay 2](Readme_data/Screenshots/Dash_state.png)
 
+## Gameplay Video
+
+[Gameplay Video](Readme_data/Videos/neonkatana_demo.mp4)
+---
 ## 🧠 Architecture Overview
 
 ### 🔹 Game Flow (Event-Driven)
