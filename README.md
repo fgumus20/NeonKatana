@@ -20,9 +20,9 @@ Neon Katana is a top-down action prototype built in Unity, focused on modular co
 ---
 ## Screenshots
 <p align="center">
-  <img src="Readme_data/Screenshots/Start_game.png" alt="Start Screen" width="300" />
-  <img src="Readme_data/Screenshots/Dash_state.png" alt="Dash Combat" width="300" />
-   <img src="Readme_data/Screenshots/Screenshot_1080x1920_10.png" alt="Dash Combat" width="300" />
+  <img src="Readme_data/Screenshots/Start_game.png" alt="Start Screen" width="200" />
+  <img src="Readme_data/Screenshots/Dash_state.png" alt="Dash Combat" width="200" />
+   <img src="Readme_data/Screenshots/Screenshot_1080x1920_10.png" alt="Dash Combat" width="200" />
 </p>
 
 ## Gameplay Video
