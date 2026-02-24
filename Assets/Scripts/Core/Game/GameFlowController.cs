@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Scripts.Level;
+using UnityEngine.UIElements;
 
 public class GameFlowController : MonoBehaviour
 {
@@ -9,9 +10,9 @@ public class GameFlowController : MonoBehaviour
     [SerializeField] private UIIntroAnimator controlsIntro;
 
     [Header("Panels")]
-    [SerializeField] private GameObject startPanel;
-    [SerializeField] private GameObject winPanel;
-    [SerializeField] private GameObject losePanel;
+    [SerializeField] private UIPanelAnimator startPanelAnim;
+    [SerializeField] private UIPanelAnimator winPanelAnim;
+    [SerializeField] private UIPanelAnimator losePanelAnim;
 
     private void OnEnable()
     {
@@ -37,18 +38,18 @@ public class GameFlowController : MonoBehaviour
         hudIntro.PlayOut();
         controlsIntro.PlayOut();
 
-        startPanel.SetActive(true);
-        winPanel.SetActive(false);
-        losePanel.SetActive(false);
+        startPanelAnim.Show();
+        winPanelAnim.Hide();
+        losePanelAnim.Hide();
     }
 
     public void StartGame()
     {
         Time.timeScale = 1f;
 
-        startPanel.SetActive(false);
-        winPanel.SetActive(false);
-        losePanel.SetActive(false);
+        startPanelAnim.Hide();
+        winPanelAnim.Hide();
+        losePanelAnim.Hide();
 
         hudIntro.PlayIn();
         controlsIntro.PlayIn();
@@ -63,9 +64,9 @@ public class GameFlowController : MonoBehaviour
         //hudIntro.PlayOut();
         //controlsIntro.PlayOut();
 
-        winPanel.SetActive(true);
-        losePanel.SetActive(false);
-        startPanel.SetActive(false);
+        winPanelAnim.Show();
+        losePanelAnim.Hide();
+        startPanelAnim.Hide();
     }
 
     private void OnGameOver()
@@ -75,9 +76,9 @@ public class GameFlowController : MonoBehaviour
         hudIntro.PlayOut();
         controlsIntro.PlayOut();
 
-        losePanel.SetActive(true);
-        winPanel.SetActive(false);
-        startPanel.SetActive(false);
+        losePanelAnim.Show();
+        winPanelAnim.Hide();
+        startPanelAnim.Hide();
     }
 
     public void Retry()
