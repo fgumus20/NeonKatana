@@ -60,8 +60,8 @@ public class GameFlowController : MonoBehaviour
     {
         Time.timeScale = 0f;
 
-        hudIntro.PlayOut();
-        controlsIntro.PlayOut();
+        //hudIntro.PlayOut();
+        //controlsIntro.PlayOut();
 
         winPanel.SetActive(true);
         losePanel.SetActive(false);

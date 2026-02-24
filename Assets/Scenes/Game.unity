@@ -2435,7 +2435,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &695474104
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5259,6 +5259,7 @@ GameObject:
   - component: {fileID: 2008020383}
   - component: {fileID: 2008020382}
   - component: {fileID: 2008020381}
+  - component: {fileID: 2008020384}
   m_Layer: 5
   m_Name: Start_Button
   m_TagString: Untagged
@@ -5379,6 +5380,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2008020379}
   m_CullTransparentMesh: 1
+--- !u!114 &2008020384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2008020379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7a17c25bccf0784a90bb67a60c3719b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 2008020380}
+  scaleUp: 1.07
+  scaleDur: 0.55
+  floatY: 6
+  floatDur: 1.2
 --- !u!1 &2075474202
 GameObject:
   m_ObjectHideFlags: 0
